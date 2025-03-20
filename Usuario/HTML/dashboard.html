@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Monitor VM</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra navegación izquierda NO TOCAR -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span><i class="fas fa-server"></i>Nombre web</span>
+        </div>
+        <ul class="navbar-menu">
+            <li><a href="inicio.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="servidores.html"><i class="fas fa-server"></i> Mis Servidores</a></li>
+            <li><a href="contenedores.html"><i class="fas fa-box"></i> Mis Contenedores</a></li>
+            <li><a href="marketplace.html"><i class="fas fa-store"></i> Marketplace</a></li>
+            <li><a href="facturacion.html"><i class="fas fa-credit-card"></i> Facturación</a></li>
+            <li><a href="support.html"><i class="fas fa-ticket-alt"></i> Soporte</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header con el user NO TOCAR-->
+    <div class="main-content">
+        <header>
+            <div class="navbar-user">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <span id="username">Usuario</span>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="#"><i class="fas fa-user"></i> Perfil</a>
+                    <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido principal: es lo que va cambiando según la página que sea -->
+        <main class="container">
+            <h1>Dashboard</h1>
+            
+            <!-- Resumen general de máquinas -->
+            <div class="machines-overview">
+                <h2>Resumen de Máquinas Virtuales</h2>
+                <div class="overview-grid">
+                    <div class="overview-item">
+                        <i class="fas fa-server"></i>
+                        <div class="overview-info">
+                            <h3>Total Máquinas</h3>
+                            <p>5</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="overview-info">
+                            <h3>Activas</h3>
+                            <p>3</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="overview-info">
+                            <h3>Inactivas</h3>
+                            <p>2</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-microchip"></i>
+                        <div class="overview-info">
+                            <h3>CPU Total</h3>
+                            <p>75%</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-memory"></i>
+                        <div class="overview-info">
+                            <h3>RAM Total</h3>
+                            <p>60%</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-hdd"></i>
+                        <div class="overview-info">
+                            <h3>Almacenamiento</h3>
+                            <p>45%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos de máquinas -->
+            <div class="dashboard-grid">
+                <!-- Máquina 1 -->
+                <div class="machine-card">
+                    <div class="machine-header">
+                        <h3>Máquina 1</h3>
+                        <span class="status-indicator active"></span>
+                    </div>
+                    <div class="grafana-container">
+                        <iframe src="http://localhost:3000/d-solo/your-dashboard-id?orgId=1&panelId=1&refresh=5s&theme=light" 
+                                frameborder="0" 
+                                width="100%" 
+                                height="200">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Máquina 2 -->
+                <div class="machine-card">
+                    <div class="machine-header">
+                        <h3>Máquina 2</h3>
+                        <span class="status-indicator inactive"></span>
+                    </div>
+                    <div class="grafana-container">
+                        <iframe src="http://localhost:3000/d-solo/your-dashboard-id?orgId=1&panelId=2&refresh=5s&theme=light" 
+                                frameborder="0" 
+                                width="100%" 
+                                height="200">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../JS/script.js"></script>
+</body>
+</html>
