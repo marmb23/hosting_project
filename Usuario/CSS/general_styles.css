@@ -1,4 +1,11 @@
+@import url("contenedores_styles.css");
+@import url("dashboard_styles.css");
+@import url("facturacion_styles.css");
+@import url("inicio_styles.css");
+@import url("marketplace_styles.css");
 @import url("servidores_styles.css");
+@import url("support_styles.css");
+
 
 /* Estilo del cuerpo de la página de usuario */
 body {
@@ -193,6 +200,7 @@ header {
     border-top: 1px solid #eee;
     margin-top: 5px;
 }
+
 /* Hover para cerrar sesión */
 .dropdown-menu a:last-child:hover {
     background-color: #fff5f5;
