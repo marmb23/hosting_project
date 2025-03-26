@@ -1,0 +1,97 @@
+/* Estilos mejorados para la página de login */
+body {
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
+    box-sizing: border-box; /* Ensure consistent box model */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #123046, #26517c);
+    font-family: 'Poppins', sans-serif;
+    margin: 0; /* Ensure no margin around the container */
+    padding: 0; /* Ensure no padding around the container */
+}
+
+.login-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: 0; /* Remove any margin around the card */
+}
+
+.login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1px;
+    margin-bottom: 0px;
+}
+
+.login-header img {
+    width: 250px; /* Adjust size if needed */
+}
+
+.login-card h1 {
+    font-size: 1.8em;
+    color: #123046;
+    margin-bottom: 1px; /* Reduce spacing below "Bienvenido" */
+}
+
+.login-card p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px; /* Reduce spacing below the description */
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-card input[type="text"],
+.login-card input[type="password"] {
+    width: 94%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-card input[type="text"]:focus,
+.login-card input[type="password"]:focus {
+    border-color: #26517c;
+    box-shadow: 0 0 0 2px rgba(38, 81, 124, 0.2);
+    outline: none;
+}
+
+.login-card button {
+    background-color: #26517c;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-card button:hover {
+    background-color: #103956;
+    transform: translateY(-2px);
+}
+
+.login-card button:active {
+    background-color: #123046;
+    transform: translateY(0);
+}
