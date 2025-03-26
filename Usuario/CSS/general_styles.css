@@ -85,6 +85,24 @@ body {
     color: #ffffff;
 }
 
+.navbar-brand a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar-brand a:hover {
+    color: #4275a9;
+}
+
+.logo-hover {
+    content: url("../Logo_MAI.png");
+    transition: opacity 0.3s ease-in-out;
+}
+
+a:hover .logo-hover {
+    content: url("../Logo_MAI_azul.png"); 
+}
+
 /* Estilo para el contenido principal */
 .main-content {
     margin-left: 220px;
