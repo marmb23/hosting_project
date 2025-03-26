@@ -94,13 +94,14 @@ body {
     color: #4275a9;
 }
 
+/* Estilo del logo de la barra de navegación izquierda, para tenerlo blanco y si pones el ratón encima transicione a azul */
 .logo-hover {
-    content: url("../Logo_MAI.png");
+    content: url("../../Fotos/Logo_MAI.png");
     transition: opacity 0.3s ease-in-out;
 }
 
 a:hover .logo-hover {
-    content: url("../Logo_MAI_azul.png"); 
+    content: url("../../Fotos/Logo_MAI_azul.png"); 
 }
 
 /* Estilo para el contenido principal */
