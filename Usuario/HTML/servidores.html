@@ -58,25 +58,31 @@
                         <th><input type="checkbox" id="select-all"></th>
                         <th>Nombre</th>
                         <th>Estado</th>
-                        <th>CPU</th>
-                        <th>RAM</th>
+                        <th>Tiempo de actividad</th>
+                        <th>Consumo de CPU / Total</th>
+                        <th>Consumo de RAM / Total</th>
+                        <th>Consumo de disco / Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Ejemplo de una máquina virtual -->
                     <tr>
                         <td><input type="checkbox" class="vm-select"></td>
-                        <td>Máquina 1</td>
-                        <td><span class="status-indicator active"></span> Activa</td>
-                        <td>25%</td>
-                        <td>4GB / 8GB</td>
+                        <td></td> <!-- Nombre de la máquina -->
+                        <td><span class="status-indicator active"></span></td> <!-- Estado de la máquina, si la máquina está activa tiene que poner class="status-indicator active"  -->
+                        <td></td> <!-- Tiempo de actividad -->
+                        <td></td> <!-- Consumo de CPU / Total -->
+                        <td></td> <!-- Consumo de RAM / Total -->
+                        <td></td> <!-- Consumo de disco / Total -->
                     </tr>
                     <tr>
                         <td><input type="checkbox" class="vm-select"></td>
-                        <td>Máquina 2</td>
-                        <td><span class="status-indicator inactive"></span> Inactiva</td>
-                        <td>0%</td>
-                        <td>0GB / 16GB</td>
+                        <td></td> <!-- Nombre de la máquina -->
+                        <td><span class="status-indicator inactive"></span></td> <!-- Estado de la máquina, si la máquina no está activa tiene que poner class="status-indicator inactive" -->
+                        <td></td> <!-- Tiempo de actividad -->
+                        <td></td> <!-- Consumo de CPU / Total -->
+                        <td></td> <!-- Consumo de RAM / Total -->
+                        <td></td> <!-- Consumo de disco / Total -->
                     </tr>
                 </tbody>
             </table>
