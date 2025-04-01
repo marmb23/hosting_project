@@ -58,7 +58,10 @@ body {
 }
 
 .login-card input[type="text"],
-.login-card input[type="password"] {
+.login-card input[type="password"],
+.login-card input[type="date"],
+.login-card input[type="email"],
+.login-card input[type="number"] {
     width: 94%;
     padding: 12px;
     border: 1px solid #ddd;
@@ -68,7 +71,10 @@ body {
 }
 
 .login-card input[type="text"]:focus,
-.login-card input[type="password"]:focus {
+.login-card input[type="password"]:focus,
+.login-card input[type="date"]:focus,
+.login-card input[type="email"]:focus,
+.login-card input[type="number"]:focus {
     border-color: #26517c;
     box-shadow: 0 0 0 2px rgba(38, 81, 124, 0.2);
     outline: none;
@@ -92,6 +98,30 @@ body {
 }
 
 .login-card button:active {
+    background-color: #123046;
+    transform: translateY(0);
+}
+
+.register-button {
+    background-color: #26517c;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%; /* Perquè tingui la mateixa amplada */
+    margin-top: 10px; /* Per separar-lo del formulari */
+}
+
+.register-button:hover {
+    background-color: #103956;
+    transform: translateY(-2px);
+}
+
+.register-button:active {
     background-color: #123046;
     transform: translateY(0);
 }

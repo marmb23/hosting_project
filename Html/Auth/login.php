@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +16,19 @@
                 <h1>Bienvenido/a</h1>
             </div>
             <p>Por favor, inicia sesión para continuar</p>
-            <form>
-                <input type="text" placeholder="Usuario" required>
-                <input type="password" placeholder="Contraseña" required>
+
+            <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
+                <p style="color: red;">Credenciales incorrectas. Inténtalo de nuevo.</p>
+            <?php $_GET['error'] = null; endif; ?>
+
+            <form action="../../Php/Auth/verifyUser.php" method="POST">
+                <input type="text" placeholder="Usuario" name="usuari" required>
+                <input type="password" placeholder="Contraseña" name="passwd" required>
                 <button type="submit">Entrar</button>
             </form>
+            <button onclick="window.location.href='register.php'" class="register-button">Registrarse</button>
         </div>
     </div>
 </body>
 </html>
+

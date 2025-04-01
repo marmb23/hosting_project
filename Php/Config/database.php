@@ -26,5 +26,6 @@ class Database {
         $statement->execute([$user]);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>
