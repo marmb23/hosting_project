@@ -1,3 +1,4 @@
+-- SQLBook: Code
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(20) NOT NULL UNIQUE,
@@ -40,9 +41,8 @@ CREATE TABLE virtual_machine (
     CONSTRAINT chk_cpu_positive CHECK (cpu > 0),
     CONSTRAINT chk_memory_positive CHECK (memory > 0),
     CONSTRAINT chk_disk_positive CHECK (disk > 0),
-
     FOREIGN KEY (user_id) REFERENCES user(id)
-)
+);
 
 CREATE TABLE invoice (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -53,4 +53,3 @@ CREATE TABLE invoice (
     CONSTRAINT chk_amount_positive CHECK (amount > 0),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
-
