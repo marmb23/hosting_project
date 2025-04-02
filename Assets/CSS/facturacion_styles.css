@@ -1,0 +1,83 @@
+@import url("general_styles.css");
+
+/* Estilo general de la tabla FACTURACIÓN */
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.billing-table thead {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.billing-table th, .billing-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.billing-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.billing-table tbody tr:hover {
+    background-color: #e9f5e9;
+}
+
+.billing-table .status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.billing-table .status.paid {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.billing-table .btn-download {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.billing-table .btn-download:hover {
+    background-color: #0056b3;
+}
+
+/* Botón "Descargar Todo" */
+.btn-download-all {
+    background-color: #28a745; /* Verde atractivo */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-download-all:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el ratón */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-download-all:active {
+    background-color: #1e7e34; /* Verde más oscuro al hacer clic */
+    transform: translateY(0);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}

@@ -28,10 +28,9 @@ class ProxmoxAPI {
     }
 
     public function getNodes() {
-        $response = $this->getRequest("nodes");
-        return $response;
+        return $this->getRequest("nodes");
     }
-
+    
     public function getContainers($node) {
         $response = $this->getRequest("nodes/$node/lxc");
         return $response;
@@ -41,11 +40,28 @@ class ProxmoxAPI {
         $response = $this->getRequest("nodes/$node/qemu");
         return $response;
     }
-    
-    public function getVMName($node, $vmid) {
-        $response = $this->getRequest("nodes/$node/qemu/$vmid/config");
-        return $response['data']['name'];
+
+    public function getContainersUser($contenedores) {
+        $nodes = $this->getNodes();
+        $result = [];
+        if (isset($nodes['data'])) {
+            foreach ($nodes['data'] as $node) {
+                $nodeName = $node['node'];
+                $lxcs = $this->getContainers($nodeName);
+                $filtered = [];
+                foreach ($lxcs['data'] as $contenedor) {
+                    if (in_array($contenedor['vmid'], $contenedores)) {
+                        $filtered[] = $contenedor;
+                    }
+                }
+                if (!empty($filtered)) {
+                    $result = $filtered;
+                }
+            }
+        }
+        return $result;
     }
+    
 }
 ?>
 

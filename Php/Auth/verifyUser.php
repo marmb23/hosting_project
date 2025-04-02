@@ -16,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($user) {
         if (password_verify($passwd, $user['password'])) {
-            $_SESSION['usuari'] = $usuari;
-            header("Location: ../../Html/User/dashboard.html");
+            $_SESSION['cliente'] = ['email' => $user['email'], 'username' => $user['username'], 'phone' => $user['phone'], 'forename' => $user['forename'], 'surname' => $user['surname']];
+            header("Location: ../../Html/User/dashboard.php");
             exit();
         }
     }

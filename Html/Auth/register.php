@@ -17,17 +17,22 @@
             </div>
             <p>Por favor, introduce los datos del nuevo usuario</p>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
-                <p style="color: red;">Credenciales incorrectas. Inténtalo de nuevo.</p>
-            <?php $_GET['error'] = null; endif; ?>
-
-            <?php if (isset($_GET['error']) && $_GET['error'] == '2'): ?>
-                <p style="color: red;">Usuario ya existente, inicia sesión.</p>
-            <?php $_GET['error'] = null; endif; ?>
-
-            <?php if (isset($_GET['error']) && $_GET['error'] == '3'): ?>
-                <p style="color: red;">Algo ha fallado, vuelve a intentarlo.</p>
-            <?php $_GET['error'] = null; endif; ?>
+            <?php
+                if (isset($_GET['error'])) {
+                    switch ($_GET['error']) {
+                        case '1':
+                            echo '<p style="color: red;">Credenciales incorrectas. Inténtalo de nuevo.</p>';
+                            break;
+                        case '2':
+                            echo '<p style="color: red;">Usuario ya existente, inicia sesión.</p>';
+                            break;
+                        case '3':
+                            echo '<p style="color: red;">Algo ha fallado, vuelve a intentarlo.</p>';
+                            break;
+                    }
+                    $_GET['error'] = null;
+                }
+            ?>
 
             <form action="../../Php/Auth/createUser.php" method="POST">
                 <input type="text" placeholder="Usuario" name="usuario" required>

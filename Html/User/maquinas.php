@@ -1,33 +1,38 @@
+<?php
+    session_start();  
+?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contenedores - Monitor VM</title>
-    <link rel="stylesheet" href="../../Assets/CSS/general_styles.css">
+    <title>Dashboard - Monitor VM</title>
+    <link rel="stylesheet" href="../../Assets/CSS/servidores_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <!-- Barra navegación izquierda NO TOCAR -->
     <nav class="navbar">
         <div class="navbar-brand">
-            <span><i class="fas fa-server"></i>Nombre web</span>
+            <span>
+                <a href="inicio.php">
+                    <img src="../../Assets/Fotos/Logo_MAI.png" alt="Icono" class="logo-hover" style="width: 40px; height: 25px; vertical-align: middle;">
+                    Hosting MAI
+                </a>
+            </span>
         </div>
         <ul class="navbar-menu">
-            <li><a href="inicio.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
-            <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="maquinas.html"><i class="fas fa-server"></i> Mis Maquinas</a></li>
-            <li><a href="contenedores.html" class="active"><i class="fas fa-box"></i> Mis Contenedores</a></li>
-            <li><a href="marketplace.html"><i class="fas fa-store"></i> Marketplace</a></li>
-            <li><a href="facturacion.html"><i class="fas fa-credit-card"></i> Facturación</a></li>
-            <li><a href="support.html"><i class="fas fa-ticket-alt"></i> Soporte</a></li>
+            <li><a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="maquinas.php" class="active"><i class="fas fa-server"></i> Mis Maquinas</a></li>
+            <li><a href="contenedores.php"><i class="fas fa-box"></i> Mis Contenedores</a></li>
+            <li><a href="marketplace.php"><i class="fas fa-store"></i> Marketplace</a></li>
+            <li><a href="facturacion.php"><i class="fas fa-credit-card"></i> Facturación</a></li>
+            <li><a href="support.php"><i class="fas fa-ticket-alt"></i> Soporte</a></li>
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR-->
+    <!-- Header con el user NO TOCAR -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -35,7 +40,7 @@
                     <div class="user-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <span id="username">Usuario</span>
+                    <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
                 <div class="dropdown-menu">
                     <a href="#"><i class="fas fa-user"></i> Editar Perfil</a>
@@ -44,9 +49,9 @@
             </div>
         </header>
 
-        <!-- Contenido principal: es lo que va cambiando según la página que sea -->        
+        <!-- Contenido principal: es lo que va cambiando según la página que sea -->
         <main class="container">
-            <h1>Monitorización de contenedores</h1>
+            <h1>Monitorización de máquinas virtuales</h1>
             <div class="bulk-actions">
                 <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
                 <button class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
@@ -70,8 +75,8 @@
                     <!-- Ejemplo de una máquina virtual -->
                     <tr>
                         <td><input type="checkbox" class="vm-select"></td>
-                        <td></td> <!-- Nombre del contenedor -->
-                        <td><span class="status-indicator active"></span></td> <!-- Estado del contenedor, si está activo tiene que poner class="status-indicator active"  -->
+                        <td></td> <!-- Nombre de la máquina -->
+                        <td><span class="status-indicator active"></span></td> <!-- Estado de la máquina, si la máquina está activa tiene que poner class="status-indicator active"  -->
                         <td></td> <!-- Tiempo de actividad -->
                         <td></td> <!-- Consumo de CPU / Total -->
                         <td></td> <!-- Consumo de RAM / Total -->
@@ -79,8 +84,8 @@
                     </tr>
                     <tr>
                         <td><input type="checkbox" class="vm-select"></td>
-                        <td></td> <!-- Nombre del contenedor -->
-                        <td><span class="status-indicator inactive"></span></td> <!-- Estado del contenedor, si no está activo tiene que poner class="status-indicator inactive" -->
+                        <td></td> <!-- Nombre de la máquina -->
+                        <td><span class="status-indicator inactive"></span></td> <!-- Estado de la máquina, si la máquina no está activa tiene que poner class="status-indicator inactive" -->
                         <td></td> <!-- Tiempo de actividad -->
                         <td></td> <!-- Consumo de CPU / Total -->
                         <td></td> <!-- Consumo de RAM / Total -->
@@ -90,8 +95,7 @@
             </table>
         </main>
     </div>
-    
-    <!-- JavaScript -->
+
     <script src="../../Assets/JavaScript/script.js"></script>
 </body>
 </html>

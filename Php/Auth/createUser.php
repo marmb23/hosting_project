@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("../Config/database.php");
 
 $database = new Database();
@@ -30,8 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare($query);
 
         if ($stmt->execute([$usuario, $hashedPassword, $nombre, $apellido, $fecha_nacimiento, $email, $telefono])) {
-            $_SESSION['usuari'] = $usuario;
-            header("Location: ../../Html/User/dashboard.html");
+            header("Location: ../../Html/Auth/login.php");
             exit();
         } else {
             header("Location: ../../Html/Auth/register.php?error=3");

@@ -22,10 +22,11 @@ class Database {
     }
 
     public function getContainers($user) {
-        $statement = $this->conn->prepare("SELECT * FROM container WHERE user_id = (SELECT id FROM user WHERE username = ?)");
+        $statement = $this->conn->prepare("SELECT container.lxcid FROM container INNER JOIN user ON container.user_id = user.id WHERE user.username = ?");
         $statement->execute([$user]);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
+    
     
 }
 ?>
