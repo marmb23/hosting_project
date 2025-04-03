@@ -1,5 +1,7 @@
 <?php
-    session_start();  
+    session_start();
+    require_once '../../Php/Objetos/proxmox.php';
+    require_once '../../Php/Config/database.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -55,7 +57,7 @@
             <div class="bulk-actions">
                 <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
                 <button class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
-                <button class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
+                <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
                 <button class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
                 <button class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
@@ -72,30 +74,71 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Ejemplo de una máquina virtual -->
-                    <tr>
-                        <td><input type="checkbox" class="vm-select"></td>
-                        <td></td> <!-- Nombre de la máquina -->
-                        <td><span class="status-indicator active"></span></td> <!-- Estado de la máquina, si la máquina está activa tiene que poner class="status-indicator active"  -->
-                        <td></td> <!-- Tiempo de actividad -->
-                        <td></td> <!-- Consumo de CPU / Total -->
-                        <td></td> <!-- Consumo de RAM / Total -->
-                        <td></td> <!-- Consumo de disco / Total -->
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="vm-select"></td>
-                        <td></td> <!-- Nombre de la máquina -->
-                        <td><span class="status-indicator inactive"></span></td> <!-- Estado de la máquina, si la máquina no está activa tiene que poner class="status-indicator inactive" -->
-                        <td></td> <!-- Tiempo de actividad -->
-                        <td></td> <!-- Consumo de CPU / Total -->
-                        <td></td> <!-- Consumo de RAM / Total -->
-                        <td></td> <!-- Consumo de disco / Total -->
-                    </tr>
+                    <?php 
+                        $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
+                        $db = new Database();
+                        $conn = $db->getConnection();
+                        $vms = $proxmox->getVmUser($db->getVM($_SESSION['cliente']['username']));
+                        foreach ($vms as $vm) {
+                            $statusClass = ($vm['status'] === 'running') ? 'active' : 'inactive';
+                            $uptimeHoras = round($vm['uptime'] / 3600, 2);
+                            $cpuPorcentaje = round(($vm['cpu'] / $vm['cpus']) * 100, 2);
+                        
+                            $memGB = round($vm['mem'] / (1024 ** 3), 2);
+                            $maxMemGB = round($vm['maxmem'] / (1024 ** 3), 2);
+                        
+                            $diskGB = round($vm['disk'] / (1024 ** 3), 2);
+                            $maxDiskGB = round($vm['maxdisk'] / (1024 ** 3), 2);
+
+                            echo "
+                            <tr>
+                                <td><input type='checkbox' class='vm-select'></td>
+                                <td>{$vm['name']}</td>
+                                <td><span class='status-indicator {$statusClass}'></span>{$vm['status']}</td>
+                                <td>{$uptimeHoras} h</td>
+                                <td>{$cpuPorcentaje}%</td>
+                                <td>{$memGB} GB / {$maxMemGB} GB</td>
+                                <td>{$diskGB} GB / {$maxDiskGB} GB</td>
+                            </tr>";
+                        }
+                    ?>
                 </tbody>
             </table>
         </main>
     </div>
 
     <script src="../../Assets/JavaScript/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const apagarBtn = document.getElementById("btnApagar");
+            const checkboxes = document.querySelectorAll(".vm-select");
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function() {
+                    const selectedVM = document.querySelector(".vm-select:checked");
+                    apagarBtn.disabled = !selectedVM;
+                });
+            });
+
+            apagarBtn.addEventListener("click", function() {
+                const selectedVM = document.querySelector(".vm-select:checked");
+                if (!selectedVM) return;
+
+                const vmName = selectedVM.closest("tr").querySelector("td:nth-child(2)").textContent.trim();
+
+                fetch("../../Php/Config/apagar_vm.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `vm=${vmName}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    if (data.success) window.location.reload();
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    </script>
 </body>
 </html>
