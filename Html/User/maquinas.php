@@ -109,6 +109,44 @@
                         }
                     ?>
                 </tbody>
+                <tr id="edit-row" style="display: none;">
+                    <td colspan="7">
+                        <form id="edit-form" class="edit-form">
+                            <label>Nombre: <input type="text" id="edit-nombre"></label>
+                            <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
+                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1"></label>
+                            <label>Teclado:
+                                <select id="edit-teclado">
+                                    <option value="de">Alemán</option>
+                                    <option value="de-ch">Alemán (Suiza)</option>
+                                    <option value="da">Danés</option>
+                                    <option value="en-gb">Inglés (UK)</option>
+                                    <option value="en-us">Inglés (US)</option>
+                                    <option value="es">Español</option>
+                                    <option value="fi">Finlandés</option>
+                                    <option value="fr">Francés</option>
+                                    <option value="fr-be">Francés (Bélgica)</option>
+                                    <option value="fr-ca">Francés (Canadá)</option>
+                                    <option value="fr-ch">Francés (Suiza)</option>
+                                    <option value="hu">Húngaro</option>
+                                    <option value="is">Islandés</option>
+                                    <option value="it">Italiano</option>
+                                    <option value="jp">Japonés</option>
+                                    <option value="lt">Lituano</option>
+                                    <option value="mk">Macedonio</option>
+                                    <option value="no">Noruego</option>
+                                    <option value="pl">Polaco</option>
+                                    <option value="pt">Portugués</option>
+                                    <option value="pt-br">Portugués (Brasil)</option>
+                                    <option value="sv">Sueco</option>
+                                    <option value="sl">Eslovaco</option>
+                                    <option value="tr">Turco</option>
+                                </select>
+                            </label>
+                            <button type="submit">Guardar</button>
+                        </form>
+                    </td>
+                </tr>
             </table>
         </main>
     </div>

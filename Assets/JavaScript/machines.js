@@ -110,3 +110,40 @@ function actualizarDatosVM() {
 }
 
 setInterval(actualizarDatosVM, 3000);
+
+document.getElementById('btnEditar').addEventListener('click', function () {
+    const checked = document.querySelector('.vm-select:checked');
+    if (!checked) return;
+
+    const row = checked.closest('tr');
+    const editRow = document.getElementById('edit-row');
+
+    // Insertamos justo debajo
+    row.insertAdjacentElement('afterend', editRow);
+    editRow.style.display = 'table-row';
+
+    // Obtenemos los datos actuales desde la fila
+    const cells = row.querySelectorAll('td');
+    const nombre = cells[1].innerText.trim();
+    const cpu = parseFloat(cells[4].innerText);
+    const ram = parseFloat(cells[5].innerText);
+
+    // Seteamos valores en inputs
+    document.getElementById('edit-nombre').value = nombre;
+    document.getElementById('edit-cpu').value = isNaN(cpu) ? '' : cpu;
+    document.getElementById('edit-ram').value = isNaN(ram) ? '' : ram;
+
+    // Formulario: captura cambios
+    document.getElementById('edit-form').onsubmit = function (e) {
+        e.preventDefault();
+        const nuevosDatos = {
+            vmid: cells[1].dataset.id,
+            node: cells[1].dataset.node,
+            nombre: document.getElementById('edit-nombre').value,
+            cpu: document.getElementById('edit-cpu').value,
+            ram: document.getElementById('edit-ram').value,
+            teclado: document.getElementById('edit-teclado').value,
+        };
+        console.log("Enviar datos editados:", nuevosDatos);
+    };
+});
