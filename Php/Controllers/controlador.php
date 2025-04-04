@@ -9,8 +9,9 @@ try {
     $conn = $db->getConnection();
     ##$user = 'isaacruiiiz';
     ##$contenedores = $proxmox->getContainersUser($db->getContainers($user));
-    $proxmox->shutdownVM();
-
+    echo "<pre>";
+    print_r($db->getUserData('anderson'));
+    echo "</pre>";
 
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

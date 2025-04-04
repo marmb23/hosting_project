@@ -14,6 +14,7 @@ $result = [];
 foreach ($vms as $vm) {
     $result[] = [ 
         'vmid' => $vm['vmid'],
+        'name' => $vm['name'],
         'status' => $vm['status'],
         'uptime' => round($vm['uptime'] / 3600, 2) . ' h',
         'cpu' => round(($vm['cpu'] / $vm['cpus']) * 100, 2) . '%',

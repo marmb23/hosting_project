@@ -1,5 +1,9 @@
 <?php
-    session_start();  
+    require_once("../../Php/Config/database.php");
+    session_start();
+    $database = new Database();
+    $conn = $database->getConnection();
+    $user = $database->verifyUser($_SESSION['cliente']['username']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,42 +55,45 @@
                 </div>
             </div>
         </header>
-<!-- Main content -->
+        <!-- Main content -->
         <main class="container">
             <h1>Editar Perfil</h1>
             <div class="card">
                 <div class="card-header">
                     <h2>Información del Usuario</h2>
+                <?php if (isset($_GET['exito'])): ?>
+                    <p style="color: white;">Datos cambiados correctamente.</p>
+                <?php $_GET['exito'] = null; endif; ?>
                 </div>
                 <div class="card-body">
-                    <form action="actualizar_perfil.php" method="POST" class="form-editar-perfil">
+                    <form action="../../Php/Auth/updateUser.php" method="POST" class="form-editar-perfil">
                         <div class="form-group">
                             <label for="username">Nombre de usuario:</label>
-                            <input type="text" id="username" name="username" value="<?php echo $_SESSION['cliente']['username']; ?>" required>
+                            <input type="text" id="username" name="username" value="<?php echo $user['username']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Dejar en blanco para no cambiar">
+                            <input type="text" id="nombre" name="nombre" value="<?php echo $user['forename']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="apellido">Apellido</label>
-                            <input type="text" id="apellido" name="apellido" placeholder="Dejar en blanco para no cambiar">
+                            <input type="text" id="apellido" name="apellido" value="<?php echo $user['surname']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-                            <input type="date" id="fecha-nacimiento" name="fecha-nacimiento">
+                            <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" value="<?php echo $user['birthdate']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Correo electrónico:</label>
-                            <input type="email" id="email" name="email" value="<?php echo $_SESSION['cliente']['email']; ?>" required>
+                            <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="telefono">Teléfono: </label>
-                            <input type="text" id="telefono" name="telefono" placeholder="Dejar en blanco para no cambiar">
+                            <input type="text" id="telefono" name="telefono" value="<?php echo $user['phone']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Nueva contraseña:</label>
-                            <input type="password" id="password" name="password" placeholder="Dejar en blanco para no cambiar">
+                            <input type="password" id="password" name="password">
                         </div>
                             <button type="submit" class="btn btn-primary">Guardar cambios</button>
                         </div>
@@ -94,11 +101,7 @@
                 </div>
             </div>
         </main>
-
-        
-
-
-
+    </div>
 
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/script.js"></script>

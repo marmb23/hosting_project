@@ -13,10 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = $_POST['tlf'];
     $passwd = $_POST['passwd'];
 
-    $query = "SELECT * FROM user WHERE username = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->execute([$usuario]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $database->verifyUser($usuari);
 
     if ($user) {
         header("Location: ../../Html/Auth/register.php?error=2");

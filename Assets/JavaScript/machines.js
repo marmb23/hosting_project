@@ -88,16 +88,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function actualizarDatosVM() {
     fetch("../../Php/VM/status.php")
-        .then(response => response.json())
+        .then(response => response.json())  // Se convierte la respuesta en JSON
         .then(data => {
+            console.log(data);  // Ahora logueamos los datos dentro de la promesa
+
             data.forEach(vm => {
                 const cell = document.querySelector(`td[data-id="${vm.vmid}"]`);
                 if (cell) {
                     const row = cell.closest("tr");
 
-                    row.querySelector("td:nth-child(3)").innerHTML =
-                        `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
-
+                    row.querySelector("td:nth-child(2)").textContent = vm.name;
+                    row.querySelector("td:nth-child(3)").innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
                     row.querySelector("td:nth-child(4)").textContent = vm.uptime;
                     row.querySelector("td:nth-child(5)").textContent = vm.cpu;
                     row.querySelector("td:nth-child(6)").textContent = `${vm.mem} / ${vm.maxmem}`;
@@ -107,4 +108,5 @@ function actualizarDatosVM() {
         })
         .catch(error => console.error("Error al actualizar datos de VMs:", error));
 }
+
 setInterval(actualizarDatosVM, 3000);

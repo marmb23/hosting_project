@@ -49,16 +49,23 @@ class Database {
         $statement = $this->conn->prepare("DELETE FROM virtual_machine WHERE vmid = ?");
         return $statement->execute([$vmid]);
     }
-    
-    public function getUserData($username) {
-        $statement = $this->conn->prepare("SELECT * FROM user WHERE username = ?");
-        $statement->execute([$username]);
-        return $statement->fetch(PDO::FETCH_ASSOC);
+
+    public function updateUserData($usuario, $nombre, $apellido, $fecha_nacimiento, $email, $telefono, $hashedPassword) {
+        if ($hashedPassword != "") {
+            $statement = $this->conn->prepare("UPDATE user SET password = ?, forename = ?, surname = ?, birthdate = ?, email = ?, phone = ? WHERE username = ?");
+            return $statement->execute([$hashedPassword, $nombre, $apellido, $fecha_nacimiento, $email, $telefono, $usuario]);
+        } else {
+            $statement = $this->conn->prepare("UPDATE user SET forename = ?, surname = ?, birthdate = ?, email = ?, phone = ? WHERE username = ?");
+            return $statement->execute([$nombre, $apellido, $fecha_nacimiento, $email, $telefono, $usuario]);
+        }
     }
 
-    public function updateUserData($username, $nombre, $apellido, $fecha_nacimiento, $email, $telefono) {
-        $statement = $this->conn->prepare("UPDATE user SET nombre = ?, apellido = ?, fecha_nacimiento = ?, email = ?, telefono = ? WHERE username = ?");
-        return $statement->execute([$nombre, $apellido, $fecha_nacimiento, $email, $telefono, $username]);
+    public function verifyUser($usuari) {
+        $query = "SELECT * FROM user WHERE username = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$usuari]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user;
     }
 }
 ?>

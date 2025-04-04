@@ -58,9 +58,9 @@
                 <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
                 <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
                 <button id="btnEditar" class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
-                <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
                 <button id="btnReiniciar" class="btn btn-secondary" disabled><i class="fas fa-sync"></i> Reiniciar</button>
                 <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
+                <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
             <form id="formOculto" method="POST" style="display: none;">
                 <input type="hidden" name="vms_json" id="vmsInput">
@@ -72,7 +72,7 @@
                         <th>Nombre</th>
                         <th>Estado</th>
                         <th>Tiempo de actividad</th>
-                        <th>Consumo de CPU / Total</th>
+                        <th>Consumo de CPU</th>
                         <th>Consumo de RAM / Total</th>
                         <th>Consumo de disco / Total</th>
                     </tr>

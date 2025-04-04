@@ -269,11 +269,21 @@ header {
 }
 
 .btn-warning {
-    background-color: #ffc107;
-    color: #000;
+    background-color: #616161;
+    color: #ffffff;
 }
 
 .btn-info {
     background-color: #17a2b8;
+    color: white;
+}
+
+#btnReiniciar {
+    background-color: #ff8801;
+    color: rgb(255, 255, 255);
+}
+
+#btnConsola {
+    background-color: #000000;
     color: white;
 }
