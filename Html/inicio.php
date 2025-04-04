@@ -69,4 +69,4 @@
             <p>&copy; 2025 Hosting MAI. Todos los derechos reservados.</p>
         </footer>
 </body>
-</html>3
+</html>

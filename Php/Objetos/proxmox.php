@@ -97,83 +97,62 @@ class ProxmoxAPI {
         return $result;
     }
     
-    function shutdownVM($node, $vmid) {
-        $hostname = '192.168.189.160';
-        $username = 'root';
-        $password = 'P@ssw0rd';
-        
+    function sshConnection($hostname = '192.168.189.160', $username = 'root', $password = 'P@ssw0rd') {
         $connection = ssh2_connect($hostname, 22);
         if (!$connection) {
             die('No se pudo conectar al servidor Proxmox');
         }
-        
+
         if (!ssh2_auth_password($connection, $username, $password)) {
             die('Autenticación fallida');
         }
-        
-        $command = "pvesh create /nodes/$node/qemu/$vmid/status/stop";
-    
+
+        return $connection;
+    }
+
+    function executeCommand($connection, $command) {
         $output = ssh2_exec($connection, $command);
         stream_set_blocking($output, true); 
         $result = stream_get_contents($output);
-    
         fclose($output);
+        return $result;
+    }
+
+    function shutdownVM($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/qemu/$vmid/status/stop";
+        $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
-    
         return $result;
     }
 
     function startVM($node, $vmid) {
-        $hostname = '192.168.189.160';
-        $username = 'root';
-        $password = 'P@ssw0rd';
-        
-        $connection = ssh2_connect($hostname, 22);
-        if (!$connection) {
-            die('No se pudo conectar al servidor Proxmox');
-        }
-        
-        if (!ssh2_auth_password($connection, $username, $password)) {
-            die('Autenticación fallida');
-        }
-        
+        $connection = $this->sshConnection();
         $command = "pvesh create /nodes/$node/qemu/$vmid/status/start";
-    
-        $output = ssh2_exec($connection, $command);
-        stream_set_blocking($output, true); 
-        $result = stream_get_contents($output);
-    
-        fclose($output);
+        $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
-    
         return $result;
     }
 
-    function eliminarVM($node, $vmid) {
-        $hostname = '192.168.189.160';
-        $username = 'root';
-        $password = 'P@ssw0rd';
-        
-        $connection = ssh2_connect($hostname, 22);
-        if (!$connection) {
-            die('No se pudo conectar al servidor Proxmox');
-        }
-        
-        if (!ssh2_auth_password($connection, $username, $password)) {
-            die('Autenticación fallida');
-        }
-        
-        $command = "pvesh create /nodes/$node/qemu/$vmid/status/start";
-    
-        $output = ssh2_exec($connection, $command);
-        stream_set_blocking($output, true); 
-        $result = stream_get_contents($output);
-    
-        fclose($output);
+    // Función para eliminar la máquina virtual
+    function deleteVM($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh delete /nodes/$node/qemu/$vmid";
+        $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
-    
         return $result;
     }
+
+    function restartVM($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/qemu/$vmid/status/reset";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
+
+
+
 
     public function getActiveVM($vms) {
         $contador = 0;
@@ -194,5 +173,6 @@ class ProxmoxAPI {
         };
         return $contador;
     }
+    
 }
 ?>

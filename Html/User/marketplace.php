@@ -19,7 +19,7 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
-                <a href="inicio.php">
+                <a href="../inicio.php">
                     <img src="../../Assets/Fotos/Logo_MAI.png" alt="Icono" class="logo-hover" style="width: 40px; height: 25px; vertical-align: middle;">
                     Hosting MAI
                 </a>

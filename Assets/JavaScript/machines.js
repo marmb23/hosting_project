@@ -59,7 +59,23 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("btnEliminar").addEventListener("click", function () {
         const vms = getSelectedVMs();
         vmsInput.value = JSON.stringify(vms);
+        
+
         form.action = "../../Php/VM/eliminar.php";
+        form.submit();
+    });
+
+    document.getElementById("btnReiniciar").addEventListener("click", function () {
+        const vms = getSelectedVMs();
+        vmsInput.value = JSON.stringify(vms);
+        form.action = "../../Php/VM/reiniciar.php";
+        form.submit();
+    });
+
+    document.getElementById("btnConsola").addEventListener("click", function () {
+        const vms = getSelectedVMs();
+        vmsInput.value = JSON.stringify(vms);
+        form.action = "../../Php/VM/consola.php";
         form.submit();
     });
 });

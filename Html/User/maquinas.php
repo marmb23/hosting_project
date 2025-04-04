@@ -18,7 +18,7 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
-                <a href="inicio.php">
+                <a href="../inicio.php">
                     <img src="../../Assets/Fotos/Logo_MAI.png" alt="Icono" class="logo-hover" style="width: 40px; height: 25px; vertical-align: middle;">
                     Hosting MAI
                 </a>
@@ -59,6 +59,8 @@
                 <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
                 <button id="btnEditar" class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
                 <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
+                <button id="btnReiniciar" class="btn btn-secondary" disabled><i class="fas fa-sync"></i> Reiniciar</button>
+                <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
             </div>
             <form id="formOculto" method="POST" style="display: none;">
                 <input type="hidden" name="vms_json" id="vmsInput">

@@ -45,6 +45,10 @@ class Database {
         return $statement->fetchAll(PDO::FETCH_COLUMN)[0];
     }
     
+    public function deleteVM($vmid) {
+        $statement = $this->conn->prepare("DELETE FROM virtual_machine WHERE vmid = ?");
+        return $statement->execute([$vmid]);
+    }
     
 }
 ?>
