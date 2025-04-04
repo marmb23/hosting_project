@@ -1,5 +1,10 @@
 <?php
-    session_start();  
+    session_start();
+    require_once '../../Php/Objetos/proxmox.php';
+    require_once '../../Php/Config/database.php';
+    $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
+    $db = new Database();
+    $conn = $db->getConnection();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -61,21 +66,94 @@
                         <i class="fas fa-server"></i>
                         <div class="overview-info">
                             <h3>Total Máquinas</h3>
-                            <p>5</p>
+                            <p><?php echo($db->getTotalVM($_SESSION['cliente']['username'])); ?></p>
                         </div>
                     </div>
                     <div class="overview-item">
                         <i class="fas fa-check-circle"></i>
                         <div class="overview-info">
                             <h3>Activas</h3>
-                            <p>3</p>
+                            <p>
+                                <?php
+                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getVmUser($bullshit);
+                                    echo($proxmox->getActiveVM($vms));
+                                ?>
+                            </p>
                         </div>
                     </div>
                     <div class="overview-item">
                         <i class="fas fa-times-circle"></i>
                         <div class="overview-info">
                             <h3>Inactivas</h3>
-                            <p>2</p>
+                            <p>
+                                <?php
+                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getVmUser($bullshit);
+                                    echo($db->getTotalVM($_SESSION['cliente']['username']) - $proxmox->getActiveVM($vms))
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-microchip"></i>
+                        <div class="overview-info">
+                            <h3>CPU Total</h3>
+                            <p>75%</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-memory"></i>
+                        <div class="overview-info">
+                            <h3>RAM Total</h3>
+                            <p>60%</p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-hdd"></i>
+                        <div class="overview-info">
+                            <h3>Almacenamiento</h3>
+                            <p>45%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen general de máquinas -->
+            <div class="machines-overview">
+                <h2>Resumen de Máquinas Virtuales</h2>
+                <div class="overview-grid">
+                    <div class="overview-item">
+                        <i class="fas fa-server"></i>
+                        <div class="overview-info">
+                            <h3>Total Máquinas</h3>
+                            <p><?php echo($db->getTotalVM($_SESSION['cliente']['username'])); ?></p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="overview-info">
+                            <h3>Activas</h3>
+                            <p>
+                                <?php
+                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getVmUser($bullshit);
+                                    echo($proxmox->getActiveVM($vms));
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="overview-item">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="overview-info">
+                            <h3>Inactivas</h3>
+                            <p>
+                                <?php
+                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getVmUser($bullshit);
+                                    echo($db->getTotalVM($_SESSION['cliente']['username']) - $proxmox->getActiveVM($vms))
+                                ?>
+                            </p>
                         </div>
                     </div>
                     <div class="overview-item">

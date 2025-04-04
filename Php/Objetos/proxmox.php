@@ -99,6 +99,9 @@ class ProxmoxAPI {
             }
         }
         
+        usort($result, function($a, $b) {
+            return strcmp(strtolower($a['name']), strtolower($b['name']));
+        });
         return $result;
     }
     
@@ -114,6 +117,7 @@ class ProxmoxAPI {
                 
                 foreach ($qemu['data'] as $vm) {
                     if (in_array($vm['vmid'], $vms)) {
+                        $vm['node'] = $nodeName;
                         $filtered[] = $vm;
                     }
                 }
@@ -123,6 +127,9 @@ class ProxmoxAPI {
             }
         }
         
+        usort($result, function($a, $b) {
+            return strcmp(strtolower($a['name']), strtolower($b['name']));
+        });
         return $result;
     }
     
@@ -149,8 +156,69 @@ class ProxmoxAPI {
         fclose($output);
         ssh2_disconnect($connection);
     
-        echo "<pre>$result</pre>";
         return $result;
+    }
+
+    function startVM($node, $vmid) {
+        $hostname = '192.168.189.160';
+        $username = 'root';
+        $password = 'P@ssw0rd';
+        
+        $connection = ssh2_connect($hostname, 22);
+        if (!$connection) {
+            die('No se pudo conectar al servidor Proxmox');
+        }
+        
+        if (!ssh2_auth_password($connection, $username, $password)) {
+            die('Autenticación fallida');
+        }
+        
+        $command = "pvesh create /nodes/$node/qemu/$vmid/status/start";
+    
+        $output = ssh2_exec($connection, $command);
+        stream_set_blocking($output, true); 
+        $result = stream_get_contents($output);
+    
+        fclose($output);
+        ssh2_disconnect($connection);
+    
+        return $result;
+    }
+
+    function eliminarVM($node, $vmid) {
+        $hostname = '192.168.189.160';
+        $username = 'root';
+        $password = 'P@ssw0rd';
+        
+        $connection = ssh2_connect($hostname, 22);
+        if (!$connection) {
+            die('No se pudo conectar al servidor Proxmox');
+        }
+        
+        if (!ssh2_auth_password($connection, $username, $password)) {
+            die('Autenticación fallida');
+        }
+        
+        $command = "pvesh create /nodes/$node/qemu/$vmid/status/start";
+    
+        $output = ssh2_exec($connection, $command);
+        stream_set_blocking($output, true); 
+        $result = stream_get_contents($output);
+    
+        fclose($output);
+        ssh2_disconnect($connection);
+    
+        return $result;
+    }
+
+    public function getActiveVM($vms) {
+        $contador = 0;
+        foreach ($vms as $vm) {
+            if ($vm['status'] == 'running') {
+                $contador += 1;
+            }
+        };
+        return $contador;
     }
 }
 ?>

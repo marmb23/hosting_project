@@ -55,12 +55,16 @@
         <main class="container">
             <h1>Monitorización de máquinas virtuales</h1>
             <div class="bulk-actions">
-                <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
-                <button class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
+                
+                <button id="btnAgregar" class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
+                <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
                 <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
-                <button class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
+                <button id="btnEditar" class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
+                <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
+            <form id="formOculto" method="POST" style="display: none;">
+                <input type="hidden" name="vms_json" id="vmsInput">
+            </form>
             <table class="vm-table">
                 <thead>
                     <tr>
@@ -80,15 +84,7 @@
                         $conn = $db->getConnection();
 
                         $bullshit = $db->getVM($_SESSION['cliente']['username']);
-
                         $vms = $proxmox->getVmUser($bullshit);
-                        echo "<pre>";
-                        print_r($bullshit);
-                        echo "</pre>";
-
-                        echo "<pre>";
-                        print_r($vms);
-                        echo "</pre>";
 
                         foreach ($vms as $vm) {
                             $statusClass = ($vm['status'] === 'running') ? 'active' : 'inactive';
@@ -116,34 +112,7 @@
             </table>
         </main>
     </div>
-
     <script src="../../Assets/JavaScript/script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const apagarBtn = document.getElementById("btnApagar");
-            const checkboxes = document.querySelectorAll(".vm-select");
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function() {
-                    const selectedVM = document.querySelector(".vm-select:checked");
-                    apagarBtn.disabled = !selectedVM;
-                });
-            });
-
-            apagarBtn.addEventListener("click", function () {
-            const selectedCheckboxes = document.querySelectorAll(".vm-select:checked");
-
-            const vmInfo = Array.from(selectedCheckboxes).map(cb => {
-                const row = cb.closest("tr");
-                const nameCell = row.querySelector("td:nth-child(2)");
-                const name = nameCell.textContent.trim();
-                const vmid = nameCell.getAttribute("id");
-                return `${vmid}`;
-            });
-
-        });
-
-        });
-    </script>
+    <script src="../../Assets/JavaScript/machines.js"></script>
 </body>
 </html>

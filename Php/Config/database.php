@@ -30,8 +30,13 @@ class Database {
     public function getVM($user) {
         $statement = $this->conn->prepare("SELECT virtual_machine.vmid FROM virtual_machine INNER JOIN user ON virtual_machine.user_id = user.id WHERE user.username = ?");
         $statement->execute([$user]);
-   
         return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getTotalVM($user) {
+        $statement = $this->conn->prepare("SELECT count(vm.vmid) FROM virtual_machine AS vm INNER JOIN user ON vm.user_id = user.id WHERE user.username = ?");
+        $statement->execute([$user]);
+        return $statement->fetchAll(PDO::FETCH_COLUMN)[0];
     }
     
     
