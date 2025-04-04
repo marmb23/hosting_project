@@ -57,7 +57,6 @@
         <main class="container">
             <h1>Monitorización de contenedores</h1>
             <div class="bulk-actions">
-                <button class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
                 <button class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
                 <button class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
                 <button class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>

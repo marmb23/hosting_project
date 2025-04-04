@@ -55,8 +55,6 @@
         <main class="container">
             <h1>Monitorización de máquinas virtuales</h1>
             <div class="bulk-actions">
-                
-                <button id="btnAgregar" class="btn btn-success"><i class="fas fa-plus"></i> Agregar</button>
                 <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
                 <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
                 <button id="btnEditar" class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>

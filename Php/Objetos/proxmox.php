@@ -27,42 +27,6 @@ class ProxmoxAPI {
         return json_decode($response, true);
     }
 
-    private function postRequest($endpoint, $data = []) {
-        $url = "https://26.29.68.71:3939/api2/json/$endpoint";
-
-        echo "POST to: $url" . PHP_EOL;
-    
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: PVEAPIToken $this->token",
-            "Content-Type: application/json",
-        ]);
-        if (!empty($data)) {
-            $jsonData = json_encode($data);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            echo "Payload: $jsonData" . PHP_EOL;
-        }
-    
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // << AQUI
-    
-        echo "HTTP status code: $httpCode" . PHP_EOL;
-    
-        if (curl_errno($ch)) {
-            echo 'cURL Error: ' . curl_error($ch) . PHP_EOL;
-        } else {
-            echo 'Raw response: ' . $response . PHP_EOL;
-        }
-    
-        curl_close($ch);
-    
-        return json_decode($response, true);
-    }
-    
     public function getNodes() {
         return $this->getRequest("nodes");
     }
@@ -215,6 +179,16 @@ class ProxmoxAPI {
         $contador = 0;
         foreach ($vms as $vm) {
             if ($vm['status'] == 'running') {
+                $contador += 1;
+            }
+        };
+        return $contador;
+    }
+
+    public function getActiveContainers($containers) {
+        $contador = 0;
+        foreach ($containers as $container) {
+            if ($container['status'] == 'running') {
                 $contador += 1;
             }
         };

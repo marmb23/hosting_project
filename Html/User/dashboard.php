@@ -95,50 +95,29 @@
                             </p>
                         </div>
                     </div>
-                    <div class="overview-item">
-                        <i class="fas fa-microchip"></i>
-                        <div class="overview-info">
-                            <h3>CPU Total</h3>
-                            <p>75%</p>
-                        </div>
-                    </div>
-                    <div class="overview-item">
-                        <i class="fas fa-memory"></i>
-                        <div class="overview-info">
-                            <h3>RAM Total</h3>
-                            <p>60%</p>
-                        </div>
-                    </div>
-                    <div class="overview-item">
-                        <i class="fas fa-hdd"></i>
-                        <div class="overview-info">
-                            <h3>Almacenamiento</h3>
-                            <p>45%</p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <!-- Resumen general de máquinas -->
             <div class="machines-overview">
-                <h2>Resumen de Máquinas Virtuales</h2>
+                <h2>Resumen de Contenedores</h2>
                 <div class="overview-grid">
                     <div class="overview-item">
                         <i class="fas fa-server"></i>
                         <div class="overview-info">
-                            <h3>Total Máquinas</h3>
-                            <p><?php echo($db->getTotalVM($_SESSION['cliente']['username'])); ?></p>
+                            <h3>Total Contenedores</h3>
+                            <p><?php echo($db->getTotalContainers($_SESSION['cliente']['username'])); ?></p>
                         </div>
                     </div>
                     <div class="overview-item">
                         <i class="fas fa-check-circle"></i>
                         <div class="overview-info">
-                            <h3>Activas</h3>
+                            <h3>Activos</h3>
                             <p>
                                 <?php
-                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
-                                    $vms = $proxmox->getVmUser($bullshit);
-                                    echo($proxmox->getActiveVM($vms));
+                                    $bullshit = $db->getContainers($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getContainersUser($bullshit);
+                                    echo($proxmox->getActiveContainers($vms));
                                 ?>
                             </p>
                         </div>
@@ -146,35 +125,14 @@
                     <div class="overview-item">
                         <i class="fas fa-times-circle"></i>
                         <div class="overview-info">
-                            <h3>Inactivas</h3>
+                            <h3>Inactivos</h3>
                             <p>
                                 <?php
-                                    $bullshit = $db->getVM($_SESSION['cliente']['username']);
-                                    $vms = $proxmox->getVmUser($bullshit);
-                                    echo($db->getTotalVM($_SESSION['cliente']['username']) - $proxmox->getActiveVM($vms))
+                                    $bullshit = $db->getContainers($_SESSION['cliente']['username']);
+                                    $vms = $proxmox->getContainersUser($bullshit);
+                                    echo($db->getTotalContainers($_SESSION['cliente']['username']) - $proxmox->getActiveContainers($vms))
                                 ?>
                             </p>
-                        </div>
-                    </div>
-                    <div class="overview-item">
-                        <i class="fas fa-microchip"></i>
-                        <div class="overview-info">
-                            <h3>CPU Total</h3>
-                            <p>75%</p>
-                        </div>
-                    </div>
-                    <div class="overview-item">
-                        <i class="fas fa-memory"></i>
-                        <div class="overview-info">
-                            <h3>RAM Total</h3>
-                            <p>60%</p>
-                        </div>
-                    </div>
-                    <div class="overview-item">
-                        <i class="fas fa-hdd"></i>
-                        <div class="overview-info">
-                            <h3>Almacenamiento</h3>
-                            <p>45%</p>
                         </div>
                     </div>
                 </div>
@@ -189,11 +147,8 @@
                         <span class="status-indicator active"></span>
                     </div>
                     <div class="grafana-container">
-                        <iframe src="http://localhost:3000/d-solo/your-dashboard-id?orgId=1&panelId=1&refresh=5s&theme=light" 
-                                frameborder="0" 
-                                width="100%" 
-                                height="200">
-                        </iframe>
+                        <?php  
+                            echo "<iframe src='http://192.168.189.166:3000/d-solo/IfgdXjtnk/proxmox-flux-cluster?orgId=1&from=1742579431960&to=1742580058460&timezone=browser&var-dsProxmox=fegg0t1oop2bkb&var-Bucket=proxmoxmai&var-server=pve&refresh=auto&theme=dark&panelId=2&__feature.dashboardSceneSolo' width='450' height='200' frameborder='0'></iframe>" ?>
                     </div>
                 </div>
 

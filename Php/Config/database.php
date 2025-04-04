@@ -38,6 +38,12 @@ class Database {
         $statement->execute([$user]);
         return $statement->fetchAll(PDO::FETCH_COLUMN)[0];
     }
+
+    public function getTotalContainers($user) {
+        $statement = $this->conn->prepare("SELECT count(cont.lxcid) FROM container AS cont INNER JOIN user ON cont.user_id = user.id WHERE user.username = ?");
+        $statement->execute([$user]);
+        return $statement->fetchAll(PDO::FETCH_COLUMN)[0];
+    }
     
     
 }
