@@ -78,7 +78,18 @@
                         $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
                         $db = new Database();
                         $conn = $db->getConnection();
-                        $vms = $proxmox->getVmUser($db->getVM($_SESSION['cliente']['username']));
+
+                        $bullshit = $db->getVM($_SESSION['cliente']['username']);
+
+                        $vms = $proxmox->getVmUser($bullshit);
+                        echo "<pre>";
+                        print_r($bullshit);
+                        echo "</pre>";
+
+                        echo "<pre>";
+                        print_r($vms);
+                        echo "</pre>";
+
                         foreach ($vms as $vm) {
                             $statusClass = ($vm['status'] === 'running') ? 'active' : 'inactive';
                             $uptimeHoras = round($vm['uptime'] / 3600, 2);
@@ -89,11 +100,10 @@
                         
                             $diskGB = round($vm['disk'] / (1024 ** 3), 2);
                             $maxDiskGB = round($vm['maxdisk'] / (1024 ** 3), 2);
-
                             echo "
                             <tr>
                                 <td><input type='checkbox' class='vm-select'></td>
-                                <td>{$vm['name']}</td>
+                                <td data-id='{$vm['vmid']}' data-node='{$vm['node']}'>{$vm['name']}</td>
                                 <td><span class='status-indicator {$statusClass}'></span>{$vm['status']}</td>
                                 <td>{$uptimeHoras} h</td>
                                 <td>{$cpuPorcentaje}%</td>
@@ -120,24 +130,19 @@
                 });
             });
 
-            apagarBtn.addEventListener("click", function() {
-                const selectedVM = document.querySelector(".vm-select:checked");
-                if (!selectedVM) return;
+            apagarBtn.addEventListener("click", function () {
+            const selectedCheckboxes = document.querySelectorAll(".vm-select:checked");
 
-                const vmName = selectedVM.closest("tr").querySelector("td:nth-child(2)").textContent.trim();
-
-                fetch("../../Php/Config/apagar_vm.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `vm=${vmName}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) window.location.reload();
-                })
-                .catch(error => console.error("Error:", error));
+            const vmInfo = Array.from(selectedCheckboxes).map(cb => {
+                const row = cb.closest("tr");
+                const nameCell = row.querySelector("td:nth-child(2)");
+                const name = nameCell.textContent.trim();
+                const vmid = nameCell.getAttribute("id");
+                return `${vmid}`;
             });
+
+        });
+
         });
     </script>
 </body>
