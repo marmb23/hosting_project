@@ -3,13 +3,9 @@ session_start();
 require_once '../../Php/Objetos/proxmox.php';
 require_once '../../Php/Config/database.php';
 
-error_reporting(E_ALL);
-
 $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
 $db = new Database();
 $conn = $db->getConnection();
-
-
 $userVms = $db->getVM($_SESSION['cliente']['username']);
 $vms = $proxmox->getVmUser($userVms);
 

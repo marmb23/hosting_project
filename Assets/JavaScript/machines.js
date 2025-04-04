@@ -27,9 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return Array.from(selectedCheckboxes).map(cb => {
             const row = cb.closest("tr");
             const nameCell = row.querySelector("td:nth-child(2)");
+            const isRunning = row.querySelector("td:nth-child(3) span").classList.contains("active");
             return {
                 vmid: nameCell.getAttribute("data-id"),
-                node: nameCell.getAttribute("data-node")
+                node: nameCell.getAttribute("data-node"),
+                status: isRunning ? "running" : "stopped"
             };
         });
     };
@@ -58,9 +60,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("btnEliminar").addEventListener("click", function () {
         const vms = getSelectedVMs();
-        vmsInput.value = JSON.stringify(vms);
-        
+        const vmEncendida = vms.find(vm => vm.status === "running");
+        if (vmEncendida) {
+            alert("No se puede eliminar una VM encendida.");
+            return;
+        }
 
+        vmsInput.value = JSON.stringify(vms);
         form.action = "../../Php/VM/eliminar.php";
         form.submit();
     });
@@ -81,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function actualizarDatosVM() {
-    fetch("../VM/status.php")
+    fetch("../../Php/VM/status.php")
         .then(response => response.json())
         .then(data => {
             data.forEach(vm => {

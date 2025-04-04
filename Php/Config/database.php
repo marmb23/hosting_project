@@ -50,5 +50,15 @@ class Database {
         return $statement->execute([$vmid]);
     }
     
+    public function getUserData($username) {
+        $statement = $this->conn->prepare("SELECT * FROM user WHERE username = ?");
+        $statement->execute([$username]);
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateUserData($username, $nombre, $apellido, $fecha_nacimiento, $email, $telefono) {
+        $statement = $this->conn->prepare("UPDATE user SET nombre = ?, apellido = ?, fecha_nacimiento = ?, email = ?, telefono = ? WHERE username = ?");
+        return $statement->execute([$nombre, $apellido, $fecha_nacimiento, $email, $telefono, $username]);
+    }
 }
 ?>

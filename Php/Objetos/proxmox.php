@@ -151,8 +151,30 @@ class ProxmoxAPI {
         return $result;
     }
 
+    public function vncTicket($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/qemu/$vmid/vncproxy --output-format json";
+        $result = $this->executeCommand($connection, $command);
+        $result = json_decode($result, true);
+        ssh2_disconnect($connection);
+        return $result;
+    }
+    
+    # https://github.com/CpuID/pve2-api-php-client que no coñoooooooooooooooo
+    public function getFrame($node, $vmid, $port, $ticket){
+        return "<iframe src='http://192.168.189.161:8006/?console=kvm&novnc=1&node={$node}&vmid={$vmid}&path=api2/json/nodes/{$node}/qemu/{$vmid}/vncwebsocket?port={$port}&vncticket={$ticket}'></iframe>";
+        #return "<iframe style='width: 900px; height: 900px;' src='https://{$this->hostname}:{$this->port}/?console=kvm&novnc=1&vmid={$vmid}&node=alpha&resize=off&cmd=' frameborder='0' scrolling='no'></iframe>";
+    }
 
+    public function setCookie($ticket) {
+		if (!$this->check_login_ticket()) {
+			throw new PVE2_Exception("Not logged into Proxmox host. No Login access ticket found or ticket expired.", 3);
+		}
+        
 
+        setcookie("PVEAuthCookie", $this->login_ticket['ticket'], 0, "/", '.mydomain.com');
+		setrawcookie("PVEAuthCookie", $this->login_ticket['ticket'], 0, "/");
+	}
 
     public function getActiveVM($vms) {
         $contador = 0;

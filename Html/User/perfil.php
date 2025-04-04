@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar perfil</title>
-    <link rel="stylesheet" href="../../Assets/CSS/marketplace_styles.css">
+    <link rel="stylesheet" href="../../Assets/CSS/perfil_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -46,11 +46,59 @@
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
                 <div class="dropdown-menu">
-                    <a href="#"><i class="fas fa-user"></i> Perfil</a>
+                    <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                 </div>
             </div>
         </header>
+<!-- Main content -->
+        <main class="container">
+            <h1>Editar Perfil</h1>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Información del Usuario</h2>
+                </div>
+                <div class="card-body">
+                    <form action="actualizar_perfil.php" method="POST" class="form-editar-perfil">
+                        <div class="form-group">
+                            <label for="username">Nombre de usuario:</label>
+                            <input type="text" id="username" name="username" value="<?php echo $_SESSION['cliente']['username']; ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Dejar en blanco para no cambiar">
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" placeholder="Dejar en blanco para no cambiar">
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha-nacimiento">Fecha de nacimiento:</label>
+                            <input type="date" id="fecha-nacimiento" name="fecha-nacimiento">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico:</label>
+                            <input type="email" id="email" name="email" value="<?php echo $_SESSION['cliente']['email']; ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono: </label>
+                            <input type="text" id="telefono" name="telefono" placeholder="Dejar en blanco para no cambiar">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Nueva contraseña:</label>
+                            <input type="password" id="password" name="password" placeholder="Dejar en blanco para no cambiar">
+                        </div>
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        
+
+
+
 
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/script.js"></script>
