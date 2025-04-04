@@ -1,21 +1,43 @@
 @import url("general_styles.css");
 
+header {
+    left: 0 !important; /* Sobrescribe el margen izquierdo del header */
+    width: 100% !important; /* Asegura que ocupe todo el ancho */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+.btn-user {
+    background-color: rgba(6,38,61,1);
+    color: #fff;
+    border: none;
+    padding: 7px 13px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-user:hover,
+.btn-user:focus,
+.btn-user:active {
+    background-color: rgb(12, 77, 123);
+}
+
+/* Eliminar la barra blanca de la izquierda */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.main-content {
+    margin-left: 0; /* Elimina el margen izquierdo */
+}
+
 .hero {
-    background: #1e90ff;
+    background: #1b4868;
     color: #fff;
     text-align: center;
     padding: 80px 20px;
-}
-
-.btn-primary, .btn-secondary {
-    background: #fff;
-    color: #1e90ff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    margin-top: 20px;
-    display: inline-block;
 }
 
 .features {
@@ -45,6 +67,66 @@
 footer {
     text-align: center;
     padding: 20px;
-    background: #1e90ff;
+    background: #123046;
     color: white;
+}
+
+/* Estilo para las tarjetas (cards) */
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 60px 20px;
+    background: #fff;
+    gap: 20px;
+}
+
+.card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    max-width: 300px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card i {
+    font-size: 55px;
+    color: #123046;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.card p {
+    font-size: 16px;
+    color: black;
+    margin-bottom: 20px;
+}
+
+/* Botones con hover */
+.btn-primary {
+    background: #123046;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background: #296c9c;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

@@ -1,3 +1,8 @@
+<?php
+    session_start();
+    $redirectUrl = isset($_SESSION['cliente']) ? "User/marketplace.php" : "Auth/login.php";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,57 +17,56 @@
 
 <body>
     <!-- Header con el user NO TOCAR -->
-    <div class="main-content">
         <header>
             <div class="navbar-user">
                 <div class="user-info">
-                    <form action="../../Html/Auth/login.php" method="POST">
-                        <button type="submit" class="btn-user">Iniciar Sesión</button>
+                    <form action="../Html/Auth/login.php" method="POST">
+                        <button type="submit" class="btn-user">Iniciar sesión</button>
                     </form>
                 </div>
             </div>
         </header>
-
+    
         <!-- Hero Section -->
         <section class="hero">
             <h1>Bienvenido a Hosting MAI</h1>
             <p>Tu solución confiable y rápida para servidores virtuales, contenedores y más.</p>
-            <a href="marketplace.php" class="btn-primary">Explorar Marketplace</a>
+            <a href="<?php echo $redirectUrl; ?>" class="btn-primary">Explorar Marketplace</a>
         </section>
 
-        <!-- Productos Destacados -->
+    <div class="main-content">
         <section class="features">
-            <div class="feature">
+            <div class="card">
                 <i class="fas fa-server"></i>
                 <h3>Servidores Virtuales</h3>
                 <p>Configura tu servidor virtual desde solo <strong>29,99€/mes</strong>.</p>
-                <a href="marketplace.php#vm-configurator" class="btn-secondary">Configurar Ahora</a>
+                <a href="<?php echo $redirectUrl; ?>#vm-configurator" class="btn-primary">Configurar Ahora</a>
             </div>
-            <div class="feature">
+            <div class="card">
                 <i class="fas fa-box"></i>
                 <h3>Contenedores</h3>
                 <p>Planes desde <strong>14,99€/mes</strong> con recursos dedicados.</p>
-                <a href="marketplace.php#contenedores" class="btn-secondary">Ver Planes</a>
+                <a href="<?php echo $redirectUrl; ?>#contenedores" class="btn-primary">Ver Planes</a>
             </div>
-            <div class="feature">
+            <div class="card">
                 <i class="fas fa-tools"></i>
                 <h3>Instalación Automática</h3>
                 <p>Servicios como WordPress y PrestaShop listos en minutos.</p>
-                <a href="marketplace.php#servicios" class="btn-secondary">Descubrir Servicios</a>
+                <a href="<?php echo $redirectUrl; ?>#serv" class="btn-primary">Descubrir Servicios</a>
             </div>
         </section>
+    </div>
 
         <!-- Llamado a la Acción -->
         <section class="cta">
             <h2>Planes desde 14,99€/mes</h2>
             <p>Elige el plan que mejor se adapte a tus necesidades y lanza tu proyecto hoy mismo.</p>
-            <a href="marketplace.php" class="btn-primary">Comenzar Ahora</a>
+            <a href="<?php echo $redirectUrl; ?>" class="btn-primary">Comenzar Ahora</a>
         </section>
 
         <!-- Footer -->
         <footer>
             <p>&copy; 2025 Hosting MAI. Todos los derechos reservados.</p>
         </footer>
-    </div>
 </body>
-</html>
+</html>3
