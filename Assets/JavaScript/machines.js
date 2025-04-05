@@ -130,7 +130,7 @@ function initEditButton() {
             }
             jsonInput.value = JSON.stringify(nuevosDatos);
 
-            form.action = '../../Php/LXC/editar.php';
+            form.action = '../../Php/VM/editar.php';
             form.submit();
         });
 

@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -34,7 +34,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR -->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -44,6 +44,7 @@
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
+                <!-- Dropdown para el usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -51,7 +52,7 @@
             </div>
         </header>
 
-        <!-- Contenido principal: es lo que va cambiando según la página que sea -->
+        <!-- Contenido principal -->
         <!-- Tabla de facturas -->
         <main class="container">
             <h1>Facturación</h1>
@@ -103,8 +104,9 @@
             </section>
         </main>
     </div>
+
     <!-- JavaScript -->
-    <script src="../../Assets/JavaScript/script.js"></script>
+    <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
 
 </html>

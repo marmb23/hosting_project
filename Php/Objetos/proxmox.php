@@ -176,9 +176,44 @@ class ProxmoxAPI {
 	}
 
     public function editVM($node, $vmid, $name, $cpu, $ram, $teclado) {
-        $ram = $ram * 1024; // Convertir GB a MB
+        $params = '';
+        if (!empty($name)) {
+            $params .= "--name $name ";
+        }
+        if (!empty($cpu)) {
+            $params .= "--cores $cpu ";
+        }
+        if (!empty($ram)) {
+            $ram = $ram * 1024; // Convertir a MB
+            $params .= "--memory $ram ";
+        }
+        if (!empty($teclado)) {
+            $params .= "--keyboard $teclado ";
+        }
+
         $connection = $this->sshConnection();
-        $command = "pvesh set /nodes/$node/qemu/$vmid/config --name $name --cores $cpu --memory $ram --keyboard $teclado";
+        $command = "pvesh set /nodes/$node/qemu/$vmid/config $params";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
+
+    public function editLXC($node, $lxc, $cpu, $ram, $swap) {
+        $params = '';
+        if (!empty($cpu)) {
+            $params .= "--cores $cpu ";
+        }
+        if (!empty($ram)) {
+            $ram = $ram * 1024;
+            $params .= "--memory $ram ";
+        }
+        if (!empty($swap)) {
+            $swap = $swap * 1024;
+            $params .= "--swap $swap ";
+        }
+
+        $connection = $this->sshConnection();
+        $command = "pvesh set /nodes/$node/lxc/$lxc/config $params";
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
         return $result;
@@ -234,6 +269,28 @@ class ProxmoxAPI {
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
         return $result;
+    }
+
+    public function getLessResources() {
+        $connection = $this->sshConnection();
+        $command = "pvesh get /nodes --output-format json";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        $jsonResult = json_decode($result, true);
+        if ($jsonResult[0]['mem'] > $jsonResult[1]['mem']) {
+            return $jsonResult[1]['node'];
+        } else {
+            return $jsonResult[0]['node'];
+        }
+        return $result; 
+    }
+
+    public function newVM($nodo, $vmid, $nombre, $cpu, $ram, $storage, $os){
+        $ram = $ram * 1024;
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/{$nodo}/qemu -vmid {$vmid} -name {$nombre} -cores {$cpu} -memory {$ram} -net0 model=virtio,bridge=vmbr0 -scsihw virtio-scsi-pci -scsi0 smb:{$storage},format=raw -ide0 smb:iso/{$os},media=cdrom";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
     }
 }
 ?>

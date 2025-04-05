@@ -20,7 +20,7 @@
 
 <body>
     
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -40,7 +40,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR -->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -50,23 +50,26 @@
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
+                <!-- Dropdown para el menú de usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                 </div>
             </div>
         </header>
-        <!-- Main content -->
+        <!-- Contenido principal -->
         <main class="container">
             <h1>Editar Perfil</h1>
             <div class="card">
                 <div class="card-header">
+                    <!-- Muestra los datos del usuario -->
                     <h2>Información del Usuario</h2>
                 <?php if (isset($_GET['exito'])): ?>
                     <p style="color: white;">Datos cambiados correctamente.</p>
                 <?php $_GET['exito'] = null; endif; ?>
                 </div>
                 <div class="card-body">
+                    <!-- Formulario donde mostramos los datos actuales y los puedes cambiar -->
                     <form action="../../Php/Auth/updateUser.php" method="POST" class="form-editar-perfil">
                         <div class="form-group">
                             <label for="username">Nombre de usuario:</label>
@@ -105,6 +108,6 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="../../Assets/JavaScript/script.js"></script>
+    <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
 </html>

@@ -60,6 +60,14 @@ class Database {
         }
     }
 
+    public function addInvoice($user, $amount, $date, $paid) {
+        $statement = $this->conn->prepare("SELECT id FROM user WHERE username = ?");
+        $statement->execute([$user]);
+        $user_id = $statement->fetchAll(PDO::FETCH_COLUMN)[0];
+        $statement = $this->conn->prepare("INSERT INTO invoice (user_id, amount, date, paid) VALUES (?, ?, ?, ?)");
+        return $statement->execute([$user_id, $amount, $date, $paid]);
+    }
+
     public function verifyUser($usuari) {
         $query = "SELECT * FROM user WHERE username = ?";
         $stmt = $this->conn->prepare($query);
@@ -71,6 +79,28 @@ class Database {
     public function deleteLXC($vmid) {
         $statement = $this->conn->prepare("DELETE FROM container WHERE lxcid = ?");
         return $statement->execute([$vmid]);
+    }
+
+    public function getMaxVMID(){
+        $statement = $this->conn->prepare("SELECT MAX(vmid) FROM virtual_machine");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getMaxLXCID(){
+        $statement = $this->conn->prepare("SELECT MAX(lxcid) FROM container");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+    
+    public function addMachine($usuari, $name, $cpu, $memory, $disk, $price){
+        $idUser = $this->verifyUser($usuari)['id'];
+        $idLXC = $this->getMaxLXCID()[0];
+        $idVM = $this-> getMaxVMID()[0];
+        $max = $idLXC > $idVM ? $idLXC + 1 : $idVM + 1;
+        $statement = $this->conn->prepare("INSERT INTO `virtual_machine` (`name`, `vmid`, `user_id`, `cpu`, `memory`, `disk`, `price`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $statement->execute([$name, $max, $idUser, $cpu, $memory, $disk, $price]);
+        return $max;
     }
 }
 ?>

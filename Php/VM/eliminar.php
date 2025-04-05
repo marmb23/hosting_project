@@ -13,4 +13,4 @@ foreach ($vms as $vm) {
     $database->deleteVM($vmid);
     $proxmox->deleteVM($node, $vmid);
 }
- header("Location: " . $_SERVER['HTTP_REFERER']);
+header("Location: " . $_SERVER['HTTP_REFERER']);

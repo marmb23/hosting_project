@@ -15,7 +15,7 @@
 
 <body>
     
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -35,7 +35,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR -->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -45,6 +45,7 @@
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
+                <!-- Desplegable del usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -52,7 +53,7 @@
             </div>
         </header>
 
-    <!-- Contenido principal: es lo que va cambiando según la página que sea -->
+    <!-- Contenido principal -->
         <main class="container">
             <h1>Marketplace</h1>
 
@@ -61,8 +62,19 @@
                 <h2>Configurador de Servidor Virtual</h2>
                 <div class="configurator-container">
                     <div class="configurator-form">
-                        <form id="vm-configurator">
+                        <!-- Form que envía los datos al PHP -->
+                        <form id="vm-configurator" action="../../Php/VM/agregar.php" method="POST">
                             <div class="config-grid">
+                                <div class="config-group">
+                                    <h3>Nombre</h3>
+                                    <div class="config-option">
+                                        <label>⠀</label>
+                                         <div class="input-group">
+                                            <input type="text" id="vmid" name="nombrevmid" required weight="1">
+                                         </div>
+                                    </div>
+                                </div>
+
                                 <!-- CPU -->
                                 <div class="config-group">
                                     <h3>CPU</h3>
@@ -102,28 +114,16 @@
                                     </div>
                                 </div>
 
-                                <!-- Tráfico -->
+                                <!-- Sistema Operativo -->
                                 <div class="config-group">
-                                    <h3>Tráfico</h3>
+                                    <h3>Imagen</h3>
                                     <div class="config-option">
-                                        <label>TB/mes</label>
+                                        <label>Sistema Operativo</label>
                                         <div class="input-group">
-                                            <button type="button" class="btn-minus" onclick="adjustValue('traffic', -1)">-</button>
-                                            <input type="number" id="traffic" name="traffic" min="1" max="100" value="2">
-                                            <button type="button" class="btn-plus" onclick="adjustValue('traffic', 1)">+</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- IPs -->
-                                <div class="config-group">
-                                    <h3>IPs</h3>
-                                    <div class="config-option">
-                                        <label>Públicas</label>
-                                        <div class="input-group">
-                                            <button type="button" class="btn-minus" onclick="adjustValue('ips', -1)">-</button>
-                                            <input type="number" id="ips" name="ips" min="1" max="10" value="1">
-                                            <button type="button" class="btn-plus" onclick="adjustValue('ips', 1)">+</button>
+                                        <select id="os" name="os" class="custom-select">
+                                            <option value="alpine-standard-3.21.3-x86_64.iso">Alpine 3.21.3</option>
+                                            <option value="debian">Debian</option>
+                                        </select>
                                         </div>
                                     </div>
                                 </div>
@@ -134,10 +134,11 @@
                                 <div class="price-summary">
                                     <h3>Precio Estimado</h3>
                                     <div class="price">
-                                        <span class="amount" id="total-price">29,99€</span>
+                                        <span class="amount" name="price" id="price">29,99€</span>
                                         <span class="period">/mes</span>
                                     </div>
                                 </div>
+                                <input type="hidden" name="price" id="hidden-price" value="29.99">
                                 <button type="submit" class="btn-primary">Crear Servidor</button>
                             </div>
                         </form>
@@ -163,8 +164,9 @@
                                 <li><i class="fas fa-check"></i> 1 vCPU</li>
                                 <li><i class="fas fa-check"></i> 2GB RAM</li>
                                 <li><i class="fas fa-check"></i> 20GB SSD NVMe</li>
-                                <li><i class="fas fa-check"></i> 1TB Tráfico</li>
-                                <li><i class="fas fa-check"></i> Panel de Control Básico</li>
+                                <li><i class="fas fa-check"></i> Panel de control</li>
+                                <li>⠀</li>
+
                             </ul>
                         </div>
                         <button class="btn btn-primary">Contratar</button>
@@ -184,8 +186,7 @@
                                 <li><i class="fas fa-check"></i> 2 vCPUs</li>
                                 <li><i class="fas fa-check"></i> 4GB RAM</li>
                                 <li><i class="fas fa-check"></i> 40GB SSD NVMe</li>
-                                <li><i class="fas fa-check"></i> 2TB Tráfico</li>
-                                <li><i class="fas fa-check"></i> Panel de Control Pro</li>
+                                <li><i class="fas fa-check"></i> Panel de Control</li>
                                 <li><i class="fas fa-check"></i> Backup Semanal</li>
                             </ul>
                         </div>
@@ -279,6 +280,7 @@
     </div>
     
     <!-- JavaScript -->
-    <script src="../../Assets/JavaScript/script.js"></script>
+    <script src="../../Assets/JavaScript/calculatePrices.js"></script>
+    <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
 </html>

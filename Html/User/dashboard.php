@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -38,7 +38,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR-->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -48,6 +48,7 @@
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
+                <!-- Dropdown para el menú de usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -55,7 +56,7 @@
             </div>
         </header>
 
-        <!-- Contenido principal: es lo que va cambiando según la página que sea -->
+        <!-- Contenido principal -->
         <main class="container">
             <h1>Dashboard</h1>
             
@@ -171,6 +172,7 @@
         </main>
     </div>
 
-    <script src="../../Assets/JavaScript/script.js"></script>
+    <!-- JavaScript -->
+    <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
 </html>

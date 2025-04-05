@@ -105,8 +105,6 @@ function initEditButton() {
         const cpu = parseFloat(cells[4].innerText);
         const ram = parseFloat(cells[5].innerText);
 
-        // Rellenar los inputs del formulari
-        document.getElementById('edit-nombre').value = nombre;
 
         // Configurar el botón de guardar
         const guardarBtn = document.getElementById('btnGuardar');
@@ -117,10 +115,9 @@ function initEditButton() {
             const nuevosDatos = {
                 vmid: cells[1].dataset.id,
                 node: cells[1].dataset.node,
-                nombre: document.getElementById('edit-nombre').value,
                 cpu: document.getElementById('edit-cpu').value,
                 ram: document.getElementById('edit-ram').value,
-                teclado: document.getElementById('edit-teclado').value,
+                swap: document.getElementById('edit-swap').value,
             };
 
             const form = document.getElementById('edit-form');

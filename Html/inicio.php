@@ -17,21 +17,22 @@
 
 <body>
     <!-- Header con el user NO TOCAR -->
-        <header>
-            <div class="navbar-user">
-                <div class="user-info">
-                    <form action="../Html/Auth/login.php" method="POST">
-                        <button type="submit" class="btn-user">Iniciar sesión</button>
-                    </form>
-                </div>
+    <header>
+        <div class="navbar-user">
+            <div class="user-info">
+                <form action="../Html/Auth/login.php" method="POST">
+                    <button type="submit" class="btn-user">Iniciar sesión</button>
+                </form>
             </div>
-        </header>
+        </div>
+    </header>
     
         <!-- Hero Section -->
         <section class="hero">
-            <h1>Bienvenido a Hosting MAI</h1>
-            <p>Tu solución confiable y rápida para servidores virtuales, contenedores y más.</p>
-            <a href="<?php echo $redirectUrl; ?>" class="btn-primary">Explorar Marketplace</a>
+            <h1><img src="../Assets/Fotos/Logo_MAI.png" alt="Icono" class="logo-hover" style="width: 70px; height: 50px; vertical-align: middle;">
+            <span class="brand-name">Hosting MAI</span></h1>
+                <p>Tu solución confiable y rápida para servidores virtuales, contenedores y más.</p><br>
+                <a href="<?php echo $redirectUrl; ?>" class="btn-primary">Explorar Marketplace</a>
         </section>
 
     <div class="main-content">

@@ -34,7 +34,8 @@ body {
 }
 
 .hero {
-    background: #1b4868;
+    height: 200px;
+    background: url("../Fotos/inicio.png");
     color: #fff;
     text-align: center;
     padding: 80px 20px;
@@ -59,8 +60,9 @@ body {
 }
 
 .cta {
-    background: #eee;
+    background: url("../Fotos/inicio.png");
     text-align: center;
+    color: #fff;
     padding: 60px 20px;
 }
 
@@ -129,4 +131,8 @@ footer {
     background: #296c9c;
     transform: translateY(-3px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo-container {
+    margin: left;
 }

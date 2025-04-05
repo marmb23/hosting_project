@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -36,7 +36,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR-->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -53,8 +53,9 @@
             </div>
         </header>
 
-        <!-- Contenido principal: es lo que va cambiando según la página que sea -->        
+        <!-- Contenido principal -->        
         <main class="container">
+            <!-- Botones con todas las opciones de las máquinas -->
             <h1>Monitorización de contenedores</h1>
             <div class="bulk-actions">
                 <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
@@ -64,9 +65,11 @@
                 <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
                 <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
+            <!-- Form oculto para poder enviar los datos a los phps que tocan -->
             <form id="formOculto" method="POST" style="display: none;">
                 <input type="hidden" name="vms_json" id="vmsInput">
             </form>
+            <!-- Tabla con todos los contenedores del usuario -->
             <table class="vm-table">
                 <thead>
                     <tr>
@@ -80,6 +83,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Php que obtiene los contenedores del usuario para mostrarlos en la tabla -->
                     <?php 
                         $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
                         $db = new Database();
@@ -109,39 +113,13 @@
                         }
                     ?>
                 </tbody>
+                <!-- Este es el "tr" que se muestra al pulsar el botón editar -->
                 <tr id="edit-row" style="display: none;">
                     <td id="formEditar" class="hidden" colspan="7">
                         <form id="edit-form" class="edit-form" method="POST">
-                            <label>Nombre: <input type="text" id="edit-nombre"></label>
                             <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
-                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0"></label>
-                            <label>Teclado:
-                                <select id="edit-teclado">
-                                    <option value="de">Alemán</option>
-                                    <option value="de-ch">Alemán (Suiza)</option>
-                                    <option value="da">Danés</option>
-                                    <option value="en-gb">Inglés (UK)</option>
-                                    <option value="en-us">Inglés (US)</option>
-                                    <option value="es">Español</option>
-                                    <option value="fi">Finlandés</option>
-                                    <option value="fr">Francés</option>
-                                    <option value="fr-be">Francés (Bélgica)</option>
-                                    <option value="fr-ca">Francés (Canadá)</option>
-                                    <option value="fr-ch">Francés (Suiza)</option>
-                                    <option value="hu">Húngaro</option>
-                                    <option value="is">Islandés</option>
-                                    <option value="it">Italiano</option>
-                                    <option value="jp">Japonés</option>
-                                    <option value="lt">Lituano</option>
-                                    <option value="mk">Macedonio</option>
-                                    <option value="no">Noruego</option>
-                                    <option value="pl">Polaco</option>
-                                    <option value="pt">Portugués</option>
-                                    <option value="pt-br">Portugués (Brasil)</option>
-                                    <option value="sv">Sueco</option>
-                                    <option value="sl">Eslovaco</option>
-                                    <option value="tr">Turco</option>
-                                </select>
+                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0.16"></label>
+                            <label>Swap (GB): <input type="number" id="edit-swap" step="0.1" min="0"></label>
                             </label>
                             <button id="btnGuardar" type="submit">Guardar</button>
                         </form>
@@ -152,7 +130,7 @@
     </div>
     
     <!-- JavaScript -->
-    <script src="../../Assets/JavaScript/script.js"></script>
+    <script src="../../Assets/JavaScript/buttons.js"></script>
     <script src="../../Assets/JavaScript/containers.js"></script>
 </body>
 </html>

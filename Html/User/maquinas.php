@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra navegación izquierda NO TOCAR -->
+    <!-- Barra navegación izquierda, es igual en todas las páginas -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -34,7 +34,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user NO TOCAR -->
+    <!-- Header con el user, es igual en todas las páginas -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -44,6 +44,7 @@
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
+                <!-- Dropdown de usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -51,9 +52,10 @@
             </div>
         </header>
 
-        <!-- Contenido principal: es lo que va cambiando según la página que sea -->
+        <!-- Contenido principal -->
         <main class="container">
             <h1>Monitorización de máquinas virtuales</h1>
+            <!-- Botones de acción masiva -->
             <div class="bulk-actions">
                 <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
                 <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
@@ -62,6 +64,7 @@
                 <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
                 <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
+            <!-- Form oculto para enviar los datos cuando se presiona cada botón -->
             <form id="formOculto" method="POST" style="display: none;">
                 <input type="hidden" name="vms_json" id="vmsInput">
             </form>
@@ -78,6 +81,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Php para obtener las máquinas virtuales -->
                     <?php 
                         $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
                         $db = new Database();
@@ -109,6 +113,7 @@
                         }
                     ?>
                 </tbody>
+                <!-- Fila para editar -->
                 <tr id="edit-row" style="display: none;">
                     <td id="formEditar" class="hidden" colspan="7">
                         <form id="edit-form" class="edit-form" method="POST">
@@ -150,7 +155,9 @@
             </table>
         </main>
     </div>
-    <script src="../../Assets/JavaScript/script.js"></script>
+
+    <!-- JavaScript -->
+    <script src="../../Assets/JavaScript/buttons.js"></script>
     <script src="../../Assets/JavaScript/machines.js"></script>
 </body>
 </html>
