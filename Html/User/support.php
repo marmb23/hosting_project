@@ -76,6 +76,7 @@
             </form>
         </main>
     </div>
+    
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/script.js"></script>
 </body>

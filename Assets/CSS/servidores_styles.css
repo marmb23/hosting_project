@@ -86,3 +86,18 @@
 .status-indicator.inactive {
     background-color: red;
 }
+
+/* Estado visible */
+.visible {
+    opacity: 1;
+    height: auto;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+/* Estado oculto */
+.hidden {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}

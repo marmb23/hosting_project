@@ -1,5 +1,6 @@
 <?php
     require_once("../../Php/Config/database.php");
+    
     session_start();
     $database = new Database();
     $conn = $database->getConnection();

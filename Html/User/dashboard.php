@@ -2,6 +2,7 @@
     session_start();
     require_once '../../Php/Objetos/proxmox.php';
     require_once '../../Php/Config/database.php';
+
     $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
     $db = new Database();
     $conn = $db->getConnection();
@@ -48,7 +49,7 @@
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
                 <div class="dropdown-menu">
-                    <a href="perfil.php"><i class="fas fa-user"></i> Perfil</a>
+                    <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                 </div>
             </div>

@@ -67,5 +67,10 @@ class Database {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user;
     }
+
+    public function deleteLXC($vmid) {
+        $statement = $this->conn->prepare("DELETE FROM container WHERE lxcid = ?");
+        return $statement->execute([$vmid]);
+    }
 }
 ?>

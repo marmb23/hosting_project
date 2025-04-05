@@ -57,11 +57,16 @@
         <main class="container">
             <h1>Monitorización de contenedores</h1>
             <div class="bulk-actions">
-                <button class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
-                <button class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
-                <button class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
+                <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
+                <button id="btnApagar" class="btn btn-danger" disabled><i class="fas fa-power-off"></i> Apagar</button>
+                <button id="btnEditar" class="btn btn-info" disabled><i class="fas fa-edit"></i> Editar</button>
+                <button id="btnReiniciar" class="btn btn-secondary" disabled><i class="fas fa-sync"></i> Reiniciar</button>
+                <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
+                <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
+            <form id="formOculto" method="POST" style="display: none;">
+                <input type="hidden" name="vms_json" id="vmsInput">
+            </form>
             <table class="vm-table">
                 <thead>
                     <tr>
@@ -94,7 +99,7 @@
                             echo "
                             <tr>
                                 <td><input type='checkbox' class='vm-select'></td>
-                                <td>{$contenedor['name']}</td>
+                                <td data-id='{$contenedor['vmid']}' data-node='{$contenedor['node']}'>{$contenedor['name']}</td>
                                 <td><span class='status-indicator {$statusClass}'></span>{$contenedor['status']}</td>
                                 <td>{$uptimeHoras} h</td>
                                 <td>{$cpuPorcentaje}%</td>
@@ -104,12 +109,50 @@
                         }
                     ?>
                 </tbody>
+                <tr id="edit-row" style="display: none;">
+                    <td id="formEditar" class="hidden" colspan="7">
+                        <form id="edit-form" class="edit-form" method="POST">
+                            <label>Nombre: <input type="text" id="edit-nombre"></label>
+                            <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
+                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0"></label>
+                            <label>Teclado:
+                                <select id="edit-teclado">
+                                    <option value="de">Alemán</option>
+                                    <option value="de-ch">Alemán (Suiza)</option>
+                                    <option value="da">Danés</option>
+                                    <option value="en-gb">Inglés (UK)</option>
+                                    <option value="en-us">Inglés (US)</option>
+                                    <option value="es">Español</option>
+                                    <option value="fi">Finlandés</option>
+                                    <option value="fr">Francés</option>
+                                    <option value="fr-be">Francés (Bélgica)</option>
+                                    <option value="fr-ca">Francés (Canadá)</option>
+                                    <option value="fr-ch">Francés (Suiza)</option>
+                                    <option value="hu">Húngaro</option>
+                                    <option value="is">Islandés</option>
+                                    <option value="it">Italiano</option>
+                                    <option value="jp">Japonés</option>
+                                    <option value="lt">Lituano</option>
+                                    <option value="mk">Macedonio</option>
+                                    <option value="no">Noruego</option>
+                                    <option value="pl">Polaco</option>
+                                    <option value="pt">Portugués</option>
+                                    <option value="pt-br">Portugués (Brasil)</option>
+                                    <option value="sv">Sueco</option>
+                                    <option value="sl">Eslovaco</option>
+                                    <option value="tr">Turco</option>
+                                </select>
+                            </label>
+                            <button id="btnGuardar" type="submit">Guardar</button>
+                        </form>
+                    </td>
+                </tr>
             </table>
         </main>
     </div>
     
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/script.js"></script>
-    <script src="../../Assets/JavaScript/machines.js"></script>
+    <script src="../../Assets/JavaScript/containers.js"></script>
 </body>
 </html>

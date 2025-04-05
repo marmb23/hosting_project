@@ -7,8 +7,8 @@ require_once '../../Php/Config/database.php';
 $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
 $db = new Database();
 $conn = $db->getConnection();
-$userVms = $db->getVM($_SESSION['cliente']['username']);
-$vms = $proxmox->getVmUser($userVms);
+$userVms = $db->getContainers($_SESSION['cliente']['username']);
+$vms = $proxmox->getContainersUser($userVms);
 
 $result = [];
 

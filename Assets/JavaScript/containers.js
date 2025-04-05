@@ -46,22 +46,22 @@ function initActionButtons() {
         });
     };
 
-    configureButton("btnApagar", "../../Php/VM/apagar.php");
-    configureButton("btnEncender", "../../Php/VM/encender.php");
-    configureButton("btnReiniciar", "../../Php/VM/reiniciar.php");
-    configureButton("btnConsola", "../../Php/VM/consola.php");
-    configureButton("btnEliminar", "../../Php/VM/eliminar.php", vms => {
+    configureButton("btnApagar", "../../Php/LXC/apagar.php");
+    configureButton("btnEncender", "../../Php/LXC/encender.php");
+    configureButton("btnReiniciar", "../../Php/LXC/reiniciar.php");
+    configureButton("btnConsola", "../../Php/LXC/consola.php");
+    configureButton("btnEliminar", "../../Php/LXC/eliminar.php", vms => {
         const vmEncendida = vms.find(vm => vm.status === "running");
         if (vmEncendida) {
-            alert("No se puede eliminar una VM encendida.");
+            alert("No se puede eliminar un contenedor encendido.");
             return false;
         }
         return true;
     });
 }
 
-function actualizarDatosVM() {
-    fetch("../../Php/VM/status.php")
+function actualizarDatosContainer() {
+    fetch("../../Php/LXC/status.php")
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -69,12 +69,16 @@ function actualizarDatosVM() {
                 const cell = document.querySelector(`td[data-id="${vm.vmid}"]`);
                 if (cell) {
                     const row = cell.closest("tr");
-                    row.querySelector("td:nth-child(2)").textContent = vm.name;
-                    row.querySelector("td:nth-child(3)").innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
-                    row.querySelector("td:nth-child(4)").textContent = vm.uptime;
-                    row.querySelector("td:nth-child(5)").textContent = vm.cpu;
-                    row.querySelector("td:nth-child(6)").textContent = `${vm.mem} / ${vm.maxmem}`;
-                    row.querySelector("td:nth-child(7)").textContent = `${vm.disk} / ${vm.maxdisk}`;
+
+                    // Excluir la fila de edición (edit-row) de las actualizaciones
+                    if (row.id !== 'edit-row') {
+                        row.querySelector("td:nth-child(2)").textContent = vm.name;
+                        row.querySelector("td:nth-child(3)").innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
+                        row.querySelector("td:nth-child(4)").textContent = vm.uptime;
+                        row.querySelector("td:nth-child(5)").textContent = vm.cpu;
+                        row.querySelector("td:nth-child(6)").textContent = `${vm.mem} / ${vm.maxmem}`;
+                        row.querySelector("td:nth-child(7)").textContent = `${vm.disk} / ${vm.maxdisk}`;
+                    }
                 }
             });
         })
@@ -163,5 +167,5 @@ document.addEventListener("DOMContentLoaded", function () {
     initCheckboxEvents();
     initActionButtons();
     initEditButton();
-    setInterval(actualizarDatosVM, 3000);
+    setInterval(actualizarDatosContainer, 3000);
 });

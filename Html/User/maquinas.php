@@ -110,11 +110,11 @@
                     ?>
                 </tbody>
                 <tr id="edit-row" style="display: none;">
-                    <td colspan="7">
-                        <form id="edit-form" class="edit-form">
+                    <td id="formEditar" class="hidden" colspan="7">
+                        <form id="edit-form" class="edit-form" method="POST">
                             <label>Nombre: <input type="text" id="edit-nombre"></label>
                             <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
-                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1"></label>
+                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0"></label>
                             <label>Teclado:
                                 <select id="edit-teclado">
                                     <option value="de">Alemán</option>
@@ -143,7 +143,7 @@
                                     <option value="tr">Turco</option>
                                 </select>
                             </label>
-                            <button type="submit">Guardar</button>
+                            <button id="btnGuardar" type="submit">Guardar</button>
                         </form>
                     </td>
                 </tr>

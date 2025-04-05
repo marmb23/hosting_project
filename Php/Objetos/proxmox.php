@@ -53,6 +53,7 @@ class ProxmoxAPI {
                 
                 foreach ($lxcs['data'] as $contenedor) {
                     if (in_array($contenedor['vmid'], $contenedores)) {
+                        $contenedor['node'] = $nodeName;
                         $filtered[] = $contenedor;
                     }
                 }
@@ -170,11 +171,18 @@ class ProxmoxAPI {
 		if (!$this->check_login_ticket()) {
 			throw new PVE2_Exception("Not logged into Proxmox host. No Login access ticket found or ticket expired.", 3);
 		}
-        
-
         setcookie("PVEAuthCookie", $this->login_ticket['ticket'], 0, "/", '.mydomain.com');
 		setrawcookie("PVEAuthCookie", $this->login_ticket['ticket'], 0, "/");
 	}
+
+    public function editVM($node, $vmid, $name, $cpu, $ram, $teclado) {
+        $ram = $ram * 1024; // Convertir GB a MB
+        $connection = $this->sshConnection();
+        $command = "pvesh set /nodes/$node/qemu/$vmid/config --name $name --cores $cpu --memory $ram --keyboard $teclado";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
 
     public function getActiveVM($vms) {
         $contador = 0;
@@ -195,6 +203,37 @@ class ProxmoxAPI {
         };
         return $contador;
     }
+
+    function shutdownLXC($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/lxc/$vmid/status/stop";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
     
+    function startLXC($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/lxc/$vmid/status/start";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
+
+    function restartLXC($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh create /nodes/$node/lxc/$vmid/status/reboot";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
+
+    public function deleteLXC($node, $vmid) {
+        $connection = $this->sshConnection();
+        $command = "pvesh delete /nodes/$node/lxc/$vmid";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+        return $result;
+    }
 }
 ?>

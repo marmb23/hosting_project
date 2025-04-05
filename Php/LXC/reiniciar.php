@@ -7,6 +7,6 @@ $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad
 foreach ($vms as $vm) {
     $node = $vm['node'];
     $vmid = $vm['vmid'];
-    $proxmox->startVM($node, $vmid);
+    $proxmox->restartLXC($node, $vmid);
 }
 header("Location: " . $_SERVER['HTTP_REFERER']);
