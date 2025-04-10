@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    overflow-x: hidden;
 }
 
 /* Estilo de la barra de navegación izquierda */
@@ -14,6 +15,7 @@ body {
     top: 0;
     left: 0;
     background: rgb(2,0,36);
+    background: fill;
     background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(6,23,39,1) 16%, rgba(6,38,61,1) 100%);    
     color: white;
     display: flex;
@@ -133,11 +135,6 @@ header {
     border-radius: 10px;
     min-width: fit-content;
 }
-
-/* Hover del usuario */
-.user-info:hover {
-    background-color: #26517c44;
-}   
 
 /* Posición del icono de avatar del usuario */
 .user-avatar {

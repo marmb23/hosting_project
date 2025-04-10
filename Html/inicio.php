@@ -20,6 +20,9 @@
     <header>
         <div class="navbar-user">
             <div class="user-info">
+                <form action="../Html/Auth/register.php" method="POST">
+                    <button type="submit" class="btn-user">Registrarse</button>
+                </form>
                 <form action="../Html/Auth/login.php" method="POST">
                     <button type="submit" class="btn-user">Iniciar sesión</button>
                 </form>

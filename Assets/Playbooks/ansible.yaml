@@ -1,0 +1,70 @@
+---
+- name: Crear contenedor y configurar PHP en Proxmox
+  hosts: localhost
+  become: yes
+  vars:
+    php_version: "200"
+    vm_id: 200  # ID del contenedor
+    node_name: "pve"
+    storage: "smb"
+    template: "smb:iso/alpine-standard-3.21.3-x86_64.iso"
+    hostname: "estatuto"
+
+  tasks:
+    - name: Crear contenedor LXC en Proxmox
+      community.general.proxmox:
+        api_user: "root@pam"
+        api_password: "tu_contraseña"
+        api_host: "tu_direccion_ip_proxmox"
+        node: "{{ node_name }}"
+        vmid: "{{ vm_id }}"
+        hostname: "{{ hostname }}"
+        cores: 4
+        memory: 1024
+        swap: 512
+        netif:
+          - net0:
+              model: virtio
+              bridge: vmbr0
+              ip: dhcp
+        storage: "{{ storage }}"
+        template: "{{ template }}"
+        state: started
+
+    - name: Esperar unos segundos para que el contenedor obtenga IP
+      ansible.builtin.pause:
+        seconds: 10
+
+    - name: Obtener IP del contenedor con lxc-info
+      ansible.builtin.command: "lxc-info -n {{ vm_id }} -iH"
+      register: container_ip_raw
+      changed_when: false
+
+    - name: Guardar IP como variable
+      set_fact:
+        container_ip: "{{ container_ip_raw.stdout | regex_search('(?:\\d{1,3}\\.){3}\\d{1,3}') }}"
+
+    - name: Esperar a que el contenedor esté accesible por SSH
+      wait_for:
+        host: "{{ container_ip }}"
+        port: 22
+        state: started
+        delay: 5
+        timeout: 300
+
+    - name: Instalar PHP en el contenedor
+      ansible.builtin.apt:
+        name:
+          - "php{{ php_version }}"
+          - "php{{ php_version }}-cli"
+          - "php{{ php_version }}-fpm"
+          - "php{{ php_version }}-mbstring"
+          - "php{{ php_version }}-xml"
+          - "php{{ php_version }}-curl"
+          - "php{{ php_version }}-mysql"
+        state: present
+      delegate_to: "{{ container_ip }}"
+      become: yes
+      become_user: root
+      vars:
+        ansible_host: "{{ container_ip }}"

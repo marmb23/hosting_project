@@ -53,7 +53,7 @@
                 <!-- Dropdown para el menú de usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
-                    <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                    <a href="../../Php/Auth/cerrar_sesion.php"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                 </div>
             </div>
         </header>
