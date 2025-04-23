@@ -21,9 +21,11 @@ $ram = $_POST['ram'];
 $storage = $_POST['storage'];
 $os = $_POST['os'];
 $price = $_POST['price'];
+$date = date('Y-m-d H:i:s');
 
 $vmid = $database->addMachine($username, $nombre, $cpu, $ram, $storage, $price);
 $proxmox->newVM($nodoLess, $vmid, $nombre, $cpu, $ram, $storage, $os);
+$database->addInvoice($username, $price, $date, $nombre);
 
 header("Location: " . $_SERVER['HTTP_REFERER']);
 ?>

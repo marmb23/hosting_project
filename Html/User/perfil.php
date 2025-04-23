@@ -34,7 +34,7 @@
             <li><a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             <li><a href="maquinas.php"><i class="fas fa-server"></i> Mis Maquinas</a></li>
             <li><a href="contenedores.php"><i class="fas fa-box"></i> Mis Contenedores</a></li>
-            <li><a href="marketplace.php"  class="active"><i class="fas fa-store"></i> Marketplace</a></li>
+            <li><a href="marketplace.php"><i class="fas fa-store"></i> Marketplace</a></li>
             <li><a href="facturacion.php"><i class="fas fa-credit-card"></i> Facturación</a></li>
             <li><a href="support.php"><i class="fas fa-ticket-alt"></i> Soporte</a></li>
         </ul>

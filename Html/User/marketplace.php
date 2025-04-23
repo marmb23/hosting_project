@@ -1,6 +1,7 @@
 <?php
-    session_start();  
+session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -148,7 +149,7 @@
 
             <!-- Planes de Contenedores -->
             <section class="marketplace-section">
-                <h2>Contenedores</h2>
+                <h2>Contenedor básico y servicios</h2>
                 <div class="plans-grid">
                     <!-- Contenedor Básico -->
                     <div class="plan-card">
@@ -165,40 +166,31 @@
                                 <li><i class="fas fa-check"></i> 2GB RAM</li>
                                 <li><i class="fas fa-check"></i> 20GB SSD NVMe</li>
                                 <li><i class="fas fa-check"></i> Panel de control</li>
-                                <li>⠀</li>
-
                             </ul>
                         </div>
-                        <button class="btn btn-primary">Contratar</button>
-                    </div>
-
-                    <!-- Contenedor Pro -->
-                    <div class="plan-card">
-                        <div class="plan-header">
-                            <h3>Contenedor Pro</h3>
-                            <div class="price">
-                                <span class="amount">29.99€</span>
-                                <span class="period">/mes</span>
-                            </div>
+                        <div class="service-form">
+                            <h4>Configuración Inicial</h4>
+                            <form id="vm-configurator" action="../../Php/LXC/agregar.php" method="POST">
+                                <div class="form-group">
+                                    <label>Nombre del contenedor</label>
+                                    <input type="text" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="admin_pass" required>
+                                </div>
+                                <div class="form-group">
+                                    <select id="php" name="php" class="custom-select">
+                                        <option value="php8.2">PHP 8.2</option>
+                                        <option value="php8.3">PHP 8.3</option>
+                                        <option value="php8.4">PHP 8.4</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">Contratar</button>
+                            </form>
                         </div>
-                        <div class="plan-features">
-                            <ul>
-                                <li><i class="fas fa-check"></i> 2 vCPUs</li>
-                                <li><i class="fas fa-check"></i> 4GB RAM</li>
-                                <li><i class="fas fa-check"></i> 40GB SSD NVMe</li>
-                                <li><i class="fas fa-check"></i> Panel de Control</li>
-                                <li><i class="fas fa-check"></i> Backup Semanal</li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-primary">Contratar</button>
                     </div>
-                </div>
-            </section>
-
-            <!-- Servicios de Instalación Automática -->
-            <section class="marketplace-section">
-                <h2>Servicios de Instalación Automática</h2>
-                <div class="plans-grid">
+                    <div class="plans-grid">
                     <!-- WordPress -->
                     <div class="service-card">
                         <div class="service-header">
@@ -233,44 +225,6 @@
                                     <input type="email" name="admin_email" required>
                                 </div>
                                 <button type="submit" class="btn-primary">Instalar WordPress</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- PrestaShop -->
-                    <div class="service-card">
-                        <div class="service-header">
-                            <i class="fas fa-shopping-cart"></i>
-                            <h3>PrestaShop</h3>
-                        </div>
-                        <div class="service-features">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Instalación automática</li>
-                                <li><i class="fas fa-check"></i> Configuración inicial</li>
-                                <li><i class="fas fa-check"></i> Módulos básicos</li>
-                                <li><i class="fas fa-check"></i> Temas responsive</li>
-                            </ul>
-                        </div>
-                        <div class="service-form">
-                            <h4>Configuración Inicial</h4>
-                            <form id="prestashop-form">
-                                <div class="form-group">
-                                    <label>Nombre de la tienda</label>
-                                    <input type="text" name="shop_name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Usuario administrador</label>
-                                    <input type="text" name="admin_user" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Contraseña</label>
-                                    <input type="password" name="admin_pass" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="admin_email" required>
-                                </div>
-                                <button type="submit" class="btn-primary">Instalar PrestaShop</button>
                             </form>
                         </div>
                     </div>

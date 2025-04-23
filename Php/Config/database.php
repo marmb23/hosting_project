@@ -33,6 +33,12 @@ class Database {
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    public function getInvoiceUser($user) {
+        $statement = $this->conn->prepare("SELECT amount, date, paid, description FROM invoice i INNER JOIN user u ON i.user_id = u.id WHERE u.username = ?");
+        $statement->execute([$user]);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getTotalVM($user) {
         $statement = $this->conn->prepare("SELECT count(vm.vmid) FROM virtual_machine AS vm INNER JOIN user ON vm.user_id = user.id WHERE user.username = ?");
         $statement->execute([$user]);
@@ -60,12 +66,12 @@ class Database {
         }
     }
 
-    public function addInvoice($user, $amount, $date, $paid) {
+    public function addInvoice($user, $amount, $date, $desc) {
         $statement = $this->conn->prepare("SELECT id FROM user WHERE username = ?");
         $statement->execute([$user]);
         $user_id = $statement->fetchAll(PDO::FETCH_COLUMN)[0];
-        $statement = $this->conn->prepare("INSERT INTO invoice (user_id, amount, date, paid) VALUES (?, ?, ?, ?)");
-        return $statement->execute([$user_id, $amount, $date, $paid]);
+        $statement = $this->conn->prepare("INSERT INTO invoice (user_id, amount, date, description) VALUES (?, ?, ?, ?)");
+        return $statement->execute([$user_id, $amount, $date, $desc]);
     }
 
     public function verifyUser($usuari) {
@@ -99,6 +105,16 @@ class Database {
         $idVM = $this-> getMaxVMID()[0];
         $max = $idLXC > $idVM ? $idLXC + 1 : $idVM + 1;
         $statement = $this->conn->prepare("INSERT INTO `virtual_machine` (`name`, `vmid`, `user_id`, `cpu`, `memory`, `disk`, `price`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $statement->execute([$name, $max, $idUser, $cpu, $memory, $disk, $price]);
+        return $max;
+    }
+
+    public function addContainer($usuari, $name, $cpu, $memory, $disk, $price){
+        $idUser = $this->verifyUser($usuari)['id'];
+        $idLXC = $this->getMaxLXCID()[0];
+        $idVM = $this-> getMaxVMID()[0];
+        $max = $idLXC > $idVM ? $idLXC + 1 : $idVM + 1;
+        $statement = $this->conn->prepare("INSERT INTO `container` (`name`, `lxcid`, `user_id`, `cpu`, `memory`, `disk`, `price`) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $statement->execute([$name, $max, $idUser, $cpu, $memory, $disk, $price]);
         return $max;
     }

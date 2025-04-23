@@ -1,6 +1,14 @@
 <?php
-    session_start();  
+session_start();
+require_once '../../Php/Config/database.php';
+
+// Conexión a la base de datos
+$db = new Database();
+$conn = $db->getConnection();
+
+$invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -67,31 +75,28 @@
                             <th>Descripción</th>
                             <th>Importe</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>01/03/2025</td>
-                            <td>Servidor Virtual - 4 vCPUs, 16GB RAM</td>
-                            <td>49,99€</td>
-                            <td>Pagado</td>
-                            <td><button class="btn-download">Descargar PDF</button></td>
-                        </tr>
-                        <tr>
-                            <td>01/02/2025</td>
-                            <td>Servidor Virtual - 2 vCPUs, 8GB RAM</td>
-                            <td>29,99€</td>
-                            <td>Pagado</td>
-                            <td><button class="btn-download">Descargar PDF</button></td>
-                        </tr>
-                        <tr>
-                            <td>01/01/2025</td>
-                            <td>Servidor Virtual - 1 vCPU, 4GB RAM</td>
-                            <td>19,99€</td>
-                            <td>Pagado</td>
-                            <td><button class="btn-download"><i class="fa-file-pdf-o"></i>Descargar PDF</button></td>
-                        </tr>
+                        <?php if (!empty($invoices)): ?>
+                            <?php
+                            $total = 0;
+                            foreach ($invoices as $invoice):
+                                $amount = floatval(str_replace(',', '.', $invoice['amount']));
+                                $total += $amount;
+                            ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($invoice['date']); ?></td>
+                                    <td><?php echo htmlspecialchars($invoice['description']); ?></td>
+                                    <td><?php echo htmlspecialchars($invoice['amount']); ?></td>
+                                    <td><?php echo htmlspecialchars($invoice['paid']); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <tr>
+                                    <td colspan="5">No hay facturas disponibles.</td>
+                                </tr>
+                            <?php endif; ?>
                     </tbody>
                 </table>
             </section>
@@ -99,8 +104,7 @@
             <!-- Resumen de facturación -->
             <section class="billing-summary">
                 <h2>Resumen</h2>
-                <p>Total Facturado: <strong>99,97€</strong></p>
-                <button class="btn-download-all">Descargar Todo</button>
+                <p>Total Facturado: <strong><?php echo number_format($total ?? 0, 2, ',', '') . '€'; ?></strong></p>
             </section>
         </main>
     </div>
@@ -108,5 +112,4 @@
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
-
 </html>

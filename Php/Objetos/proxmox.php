@@ -113,9 +113,21 @@ class ProxmoxAPI {
 
     function executeCommand($connection, $command) {
         $output = ssh2_exec($connection, $command);
-        stream_set_blocking($output, true); 
+        $errorStream = ssh2_fetch_stream($output, SSH2_STREAM_STDERR);
+    
+        stream_set_blocking($output, true);
+        stream_set_blocking($errorStream, true);
+    
         $result = stream_get_contents($output);
+        $errors = stream_get_contents($errorStream);
+    
         fclose($output);
+        fclose($errorStream);
+    
+        if (!empty($errors)) {
+            echo "Error: $errors";
+        }
+    
         return $result;
     }
 
@@ -289,6 +301,14 @@ class ProxmoxAPI {
         $ram = $ram * 1024;
         $connection = $this->sshConnection();
         $command = "pvesh create /nodes/{$nodo}/qemu -vmid {$vmid} -name {$nombre} -cores {$cpu} -memory {$ram} -net0 model=virtio,bridge=vmbr0 -scsihw virtio-scsi-pci -scsi0 smb:{$storage},format=raw -ide0 smb:iso/{$os},media=cdrom";
+        $result = $this->executeCommand($connection, $command);
+        ssh2_disconnect($connection);
+    }
+
+    public function newLXC($nodoLess, $vmid, $nombre, $password, $cpu, $ram, $storage, $php){
+        $ram = $ram * 1024;
+        $connection = $this->sshConnection();
+        $command = "ansible-playbook ansible.yaml -i hosts -e \"node={$nodoLess} ct_id={$vmid} hostname={$nombre} storage=local-lvm password={$password} cores={$cpu} memory={$ram} disk={$storage} php_version={$php}\"";
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
     }
