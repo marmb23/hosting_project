@@ -17,6 +17,7 @@
             </div>
             <p>Por favor, introduce los datos del nuevo usuario</p>
 
+            <!-- Verifica si hi ha un error en les credencials, mostra un missatge d'error i neteja el paràmetre d'error -->
             <?php
                 if (isset($_GET['error'])) {
                     switch ($_GET['error']) {
@@ -34,6 +35,7 @@
                 }
             ?>
 
+            <!-- Formulari de registre -->
             <form action="../../Php/Auth/createUser.php" method="POST">
                 <input type="text" placeholder="Usuario" name="usuario" required>
                 <input type="text" placeholder="Nombre" name="nombre" required>

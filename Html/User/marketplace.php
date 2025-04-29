@@ -1,5 +1,18 @@
 <?php
-session_start();
+    // Inicia la sessió per accedir a les dades de l'usuari
+    session_start();
+
+    // Mostra un missatge d'error si el nom d'una màquina o d'un contenidor ja existeix
+    if ($_SESSION['duplicated_name']) {
+        echo "<script>alert('El nombre ya existe');</script>";
+        unset($_SESSION['duplicated_name']);
+    }
+
+    // Mostra un missatge d'error si el nom d'una màquina o d'un contenidor conté espais
+    if ($_SESSION['space_name']) {
+        echo "<script>alert('El nombre no puede contener espacios');</script>";
+        unset($_SESSION['space_name']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +29,7 @@ session_start();
 
 <body>
     
-    <!-- Barra navegación izquierda, es igual en todas las páginas -->
+    <!-- Barra de navegació esquerra, és el mateix a totes les pàgines -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -36,7 +49,7 @@ session_start();
         </ul>
     </nav>
 
-    <!-- Header con el user, es igual en todas las páginas -->
+    <!-- Header amb l'usuari, és el mateix a totes les pàgines -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -46,7 +59,7 @@ session_start();
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
-                <!-- Desplegable del usuario -->
+                <!-- Desplegable de l'usuari -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="../../Php/Auth/cerrar_sesion.php"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -54,19 +67,20 @@ session_start();
             </div>
         </header>
 
-    <!-- Contenido principal -->
+    <!-- Contingut principal -->
         <main class="container">
             <h1>Marketplace</h1>
 
-            <!-- Configurador de Servidores Virtuales -->
+            <!-- Configurador de Servidors Virtuals -->
             <section class="marketplace-section">
                 <h2>Configurador de Servidor Virtual</h2>
                 <div class="configurator-container">
                     <div class="configurator-form">
-                        <!-- Form que envía los datos al PHP -->
+                        <!-- Formulari per configurar i crear un nou servidor virtual -->
                         <form id="vm-configurator" action="../../Php/VM/agregar.php" method="POST">
                             <div class="config-grid">
                                 <div class="config-group">
+                                    <!-- Inputs per configurar el nom del servidor -->
                                     <h3>Nombre</h3>
                                     <div class="config-option">
                                         <label>⠀</label>
@@ -76,7 +90,7 @@ session_start();
                                     </div>
                                 </div>
 
-                                <!-- CPU -->
+                                <!-- Inputs per configurar el nombre de vCPUs -->
                                 <div class="config-group">
                                     <h3>CPU</h3>
                                     <div class="config-option">
@@ -89,7 +103,7 @@ session_start();
                                     </div>
                                 </div>
 
-                                <!-- RAM -->
+                                <!-- Inputs per configurar la quantitat de RAM -->
                                 <div class="config-group">
                                     <h3>RAM</h3>
                                     <div class="config-option">
@@ -102,7 +116,7 @@ session_start();
                                     </div>
                                 </div>
 
-                                <!-- Almacenamiento -->
+                                <!-- Inputs per configurar l'emmagatzematge SSD NVMe -->
                                 <div class="config-group">
                                     <h3>Almacenamiento</h3>
                                     <div class="config-option">
@@ -115,7 +129,7 @@ session_start();
                                     </div>
                                 </div>
 
-                                <!-- Sistema Operativo -->
+                                <!-- Inputs per seleccionar el sistema operatiu -->
                                 <div class="config-group">
                                     <h3>Imagen</h3>
                                     <div class="config-option">
@@ -130,7 +144,7 @@ session_start();
                                 </div>
                             </div>
 
-                            <!-- Resumen y Precio -->
+                            <!-- Mostra el preu estimat del servidor configurat -->
                             <div class="config-summary">
                                 <div class="price-summary">
                                     <h3>Precio Estimado</h3>
@@ -147,11 +161,11 @@ session_start();
                 </div>
             </section>
 
-            <!-- Planes de Contenedores -->
+            <!-- Plans dels Contenidors -->
             <section class="marketplace-section">
                 <h2>Contenedor básico y servicios</h2>
                 <div class="plans-grid">
-                    <!-- Contenedor Básico -->
+                    <!-- Formulari per contractar un contenidor bàsic -->
                     <div class="plan-card">
                         <div class="plan-header">
                             <h3>Contenedor Básico</h3>
@@ -172,6 +186,7 @@ session_start();
                             <h4>Configuración Inicial</h4>
                             <form id="vm-configurator" action="../../Php/LXC/agregar.php" method="POST">
                                 <div class="form-group">
+                                    <!-- Inputs per configurar el nom i la contrasenya del contenidor -->
                                     <label>Nombre del contenedor</label>
                                     <input type="text" name="name" required>
                                 </div>
@@ -180,6 +195,7 @@ session_start();
                                     <input type="password" name="admin_pass" required>
                                 </div>
                                 <div class="form-group">
+                                    <!-- Inputs per seleccionar la versió de PHP -->
                                     <select id="php" name="php" class="custom-select">
                                         <option value="php8.2">PHP 8.2</option>
                                         <option value="php8.3">PHP 8.3</option>
@@ -207,7 +223,9 @@ session_start();
                         </div>
                         <div class="service-form">
                             <h4>Configuración Inicial</h4>
+                            <!-- Formulari per instal·lar WordPress amb configuració inicial -->
                             <form id="wordpress-form">
+                                <!-- Inputs per configurar el nom del lloc, usuari administrador i contrasenya -->
                                 <div class="form-group">
                                     <label>Nombre del sitio</label>
                                     <input type="text" name="site_name" required>
@@ -220,6 +238,7 @@ session_start();
                                     <label>Contraseña</label>
                                     <input type="password" name="admin_pass" required>
                                 </div>
+                                <!-- Inputs per configurar el correu electrònic de l'administrador -->
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input type="email" name="admin_email" required>
@@ -233,7 +252,7 @@ session_start();
         </main>
     </div>
     
-    <!-- JavaScript -->
+    <!-- JavaScript per calcular preus i gestionar els botons -->
     <script src="../../Assets/JavaScript/calculatePrices.js"></script>
     <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>

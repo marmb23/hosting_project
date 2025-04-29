@@ -17,10 +17,12 @@
             </div>
             <p>Por favor, inicia sesión para continuar</p>
 
+            <!-- Verifica si hi ha un error en les credencials, mostra un missatge d'error i neteja el paràmetre d'error -->
             <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
                 <p style="color: red;">Credenciales incorrectas. Inténtalo de nuevo.</p>
             <?php $_GET['error'] = null; endif; ?>
 
+            <!-- Formulari d'inici de sessió -->
             <form action="../../Php/Auth/verifyUser.php" method="POST">
                 <input type="text" placeholder="Usuario" name="usuari" required>
                 <input type="password" placeholder="Contraseña" name="passwd" required>
@@ -29,6 +31,6 @@
             <button onclick="window.location.href='register.php'" class="register-button">Registrarse</button>
         </div>
     </div>
+
 </body>
 </html>
-

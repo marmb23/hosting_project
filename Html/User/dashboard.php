@@ -1,8 +1,12 @@
 <?php
+    // Inicia la sessió per accedir a les dades de l'usuari
     session_start();
+
+    // Inclou els fitxers necessaris per a la connexió amb Proxmox i la base de dades
     require_once '../../Php/Objetos/proxmox.php';
     require_once '../../Php/Config/database.php';
 
+    // Crea una instància de l'API de Proxmox i de la base de dades
     $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
     $db = new Database();
     $conn = $db->getConnection();
@@ -18,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra navegación izquierda, es igual en todas las páginas -->
+    <!-- Barra navegació esquerra, és el mateix a totes les pàgines -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -38,7 +42,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user, es igual en todas las páginas -->
+    <!-- Header amb l'usuari, és el mateix a totes les pàgines -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -56,11 +60,11 @@
             </div>
         </header>
 
-        <!-- Contenido principal -->
+        <!-- Contingut principal -->
         <main class="container">
             <h1>Dashboard</h1>
             
-            <!-- Resumen general de máquinas -->
+            <!-- Resum general de les màquines i contenidors de l'usuari -->
             <div class="machines-overview">
                 <h2>Resumen de Máquinas Virtuales</h2>
                 <div class="overview-grid">
@@ -68,6 +72,7 @@
                         <i class="fas fa-server"></i>
                         <div class="overview-info">
                             <h3>Total Máquinas</h3>
+                            <!-- Mostra el nombre total de màquines virtuals associades a l'usuari actual -->
                             <p><?php echo($db->getTotalVM($_SESSION['cliente']['username'])); ?></p>
                         </div>
                     </div>
@@ -77,8 +82,10 @@
                             <h3>Activas</h3>
                             <p>
                                 <?php
+                                    // Obté les màquines virtuals de l'usuari actual
                                     $bullshit = $db->getVM($_SESSION['cliente']['username']);
                                     $vms = $proxmox->getVmUser($bullshit);
+                                    // Mostra el nombre de màquines virtuals actives
                                     echo($proxmox->getActiveVM($vms));
                                 ?>
                             </p>
@@ -90,6 +97,7 @@
                             <h3>Inactivas</h3>
                             <p>
                                 <?php
+                                    // Calcula el nombre de màquines virtuals inactives restant les actives del total
                                     $bullshit = $db->getVM($_SESSION['cliente']['username']);
                                     $vms = $proxmox->getVmUser($bullshit);
                                     echo($db->getTotalVM($_SESSION['cliente']['username']) - $proxmox->getActiveVM($vms))
@@ -100,7 +108,7 @@
                 </div>
             </div>
 
-            <!-- Resumen general de máquinas -->
+            <!-- Resum general de les màquines -->
             <div class="machines-overview">
                 <h2>Resumen de Contenedores</h2>
                 <div class="overview-grid">
@@ -108,6 +116,7 @@
                         <i class="fas fa-server"></i>
                         <div class="overview-info">
                             <h3>Total Contenedores</h3>
+                            <!-- Mostra el nombre total de contenidors associats a l'usuari actual -->
                             <p><?php echo($db->getTotalContainers($_SESSION['cliente']['username'])); ?></p>
                         </div>
                     </div>
@@ -117,8 +126,10 @@
                             <h3>Activos</h3>
                             <p>
                                 <?php
+                                    // Obté els contenidors de l'usuari actual
                                     $bullshit = $db->getContainers($_SESSION['cliente']['username']);
                                     $vms = $proxmox->getContainersUser($bullshit);
+                                    // Mostra el nombre de contenidors actius
                                     echo($proxmox->getActiveContainers($vms));
                                 ?>
                             </p>
@@ -130,6 +141,7 @@
                             <h3>Inactivos</h3>
                             <p>
                                 <?php
+                                    // Calcula el nombre de contenidors inactius restant els actius del total
                                     $bullshit = $db->getContainers($_SESSION['cliente']['username']);
                                     $vms = $proxmox->getContainersUser($bullshit);
                                     echo($db->getTotalContainers($_SESSION['cliente']['username']) - $proxmox->getActiveContainers($vms))
@@ -140,9 +152,9 @@
                 </div>
             </div>
 
-            <!-- Gráficos de máquinas -->
+            <!-- Gràfics de les màquines -->
             <div class="dashboard-grid">
-                <!-- Máquina 1 -->
+                <!-- Màquina 1 -->
                 <div class="machine-card">
                     <div class="machine-header">
                         <h3>Máquina 1</h3>
@@ -154,7 +166,7 @@
                     </div>
                 </div>
 
-                <!-- Máquina 2 -->
+                <!-- Màquina 2 -->
                 <div class="machine-card">
                     <div class="machine-header">
                         <h3>Máquina 2</h3>

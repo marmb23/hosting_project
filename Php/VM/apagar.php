@@ -1,12 +1,19 @@
 <?php
-require_once '../../Php/Objetos/proxmox.php';
+    // Inclou el fitxer de la classe ProxmoxAPI per gestionar les operacions amb Proxmox
+    require_once '../../Php/Objetos/proxmox.php';
+    // Decodifica el JSON enviat amb les dades de les màquines virtuals
+    $vms = json_decode($_POST['vms_json'], true);
+    // Crea una instància de l'API de Proxmox amb les credencials corresponents
+    $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
 
-$vms = json_decode($_POST['vms_json'], true);
-$proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
-
-foreach ($vms as $vm) {
-    $node = $vm['node'];
-    $vmid = $vm['vmid'];
-    $proxmox->shutdownVM($node, $vmid);
-}
-header("Location: " . $_SERVER['HTTP_REFERER']);
+    // Itera sobre cada màquina virtual per apagar-les
+    foreach ($vms as $vm) {
+        $node = $vm['node'];
+        $vmid = $vm['vmid'];
+        // Apaga la màquina virtual utilitzant l'API de Proxmox
+        $proxmox->shutdownVM($node, $vmid);
+    }
+    // Redirigeix a la pàgina anterior després de completar el procés
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+?>

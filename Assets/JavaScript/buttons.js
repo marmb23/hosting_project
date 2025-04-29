@@ -1,4 +1,7 @@
-// Inicializar la funcionalidad de selección múltiple
+/**
+ * Funció per iniciar els botons de "Encendre", "Apagar", "Reiniciar" i "Eliminar" 
+ * quan es selecciona una màquina virtual.
+ */
 function initializeBulkActions() {
     const seleccionar_todo_checkbox = document.getElementById('select-all');
     const checkbox_maquinas = document.querySelectorAll('.vm-select');

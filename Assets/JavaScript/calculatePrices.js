@@ -1,4 +1,8 @@
-// Ajustar el valor de un input
+/**
+ * Ajusta el valor d'un input numèric dins dels límits permesos i recalcula el preu.
+ * @param {string} inputId - L'ID de l'input el valor del qual s'ajustarà.
+ * @param {number} adjustment - El valor a ajustar (positiu o negatiu).
+ */
 function adjustValue(inputId, adjustment) {
     const input = document.getElementById(inputId);
     if (input) {
@@ -22,7 +26,10 @@ function adjustValue(inputId, adjustment) {
     }
 }
 
-// Calcular el precio total
+/**
+ * Calcula el preu total basant-se en els valors actuals de vCPUs, RAM i emmagatzematge.
+ * Aplica descomptes per volum i actualitza la interfície i el camp ocult amb el preu calculat.
+ */
 function calculatePrice() {
     // Obtener valores actuales
     const vcpus = parseInt(document.getElementById('vcpus')?.value) || 0;
@@ -54,7 +61,10 @@ function calculatePrice() {
     updateHiddenPrice(totalPrice);
 }
 
-// Actualizar el precio mostrado en la interfaz
+/**
+ * Actualitza el preu mostrat a la interfície d'usuari.
+ * @param {number} totalPrice - El preu total calculat.
+ */
 function updatePriceDisplay(totalPrice) {
     const priceElement = document.getElementById('price');
     if (priceElement) {
@@ -63,7 +73,10 @@ function updatePriceDisplay(totalPrice) {
     }
 }
 
-// Actualizar el campo oculto para enviar el precio por POST
+/**
+ * Actualitza el valor del camp ocult que s'enviarà per POST amb el preu calculat.
+ * @param {number} totalPrice - El preu total calculat.
+ */
 function updateHiddenPrice(totalPrice) {
     const hiddenPriceInput = document.getElementById('hidden-price');
     if (hiddenPriceInput) {
@@ -71,6 +84,10 @@ function updateHiddenPrice(totalPrice) {
     }
 }
 
+/**
+ * Inicialitza el configurador de la màquina virtual, calcula el preu inicial
+ * i afegeix event listeners als inputs per recalcular el preu en temps real.
+ */
 function initializeConfigurator() {
     const configurator = document.getElementById('vm-configurator');
     if (configurator) {
@@ -90,6 +107,9 @@ function initializeConfigurator() {
     }
 }
 
+/**
+ * Executa la inicialització del configurador de la màquina virtual quan el DOM està completament carregat.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     initializeConfigurator();
 });

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <!-- Barra navegación izquierda, es igual en todas las páginas -->
+    <!-- Barra navegació esquerra, és el mateix a totes les pàgines -->
     <nav class="navbar">
         <div class="navbar-brand">
             <span>
@@ -36,7 +36,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user, es igual en todas las páginas -->
+    <!-- Header amb l'usuari, és el mateix a totes les pàgines -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -53,9 +53,9 @@
             </div>
         </header>
 
-        <!-- Contenido principal -->        
+        <!-- Contingut principal -->        
         <main class="container">
-            <!-- Botones con todas las opciones de las máquinas -->
+            <!-- Botons amb totes les opcions dels contenidors -->
             <h1>Monitorización de contenedores</h1>
             <div class="bulk-actions">
                 <button id="btnEncender" class="btn btn-primary" disabled><i class="fas fa-play"></i> Encender</button>
@@ -65,11 +65,11 @@
                 <button id="btnConsola" class="btn btn-secondary" disabled><i class="fas fa-terminal"></i> Consola</button>
                 <button id="btnEliminar" class="btn btn-warning" disabled><i class="fas fa-trash"></i> Eliminar</button>
             </div>
-            <!-- Form oculto para poder enviar los datos a los phps que tocan -->
+            <!-- Form ocult per poder enviar les dades als respectius PHPs -->
             <form id="formOculto" method="POST" style="display: none;">
                 <input type="hidden" name="vms_json" id="vmsInput">
             </form>
-            <!-- Tabla con todos los contenedores del usuario -->
+            <!-- Taula amb tots els contenidors de l'usuari -->
             <table class="vm-table">
                 <thead>
                     <tr>
@@ -83,7 +83,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Php que obtiene los contenedores del usuario para mostrarlos en la tabla -->
+                    <!-- Php que obté els contenidors de l'usuari per mostrar-los a la taula -->
                     <?php 
                         $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
                         $db = new Database();
@@ -113,7 +113,8 @@
                         }
                     ?>
                 </tbody>
-                <!-- Este es el "tr" que se muestra al pulsar el botón editar -->
+
+                <!-- Aquest és el "tr" que es mostra al donar-li al botó d'editar -->
                 <tr id="edit-row" style="display: none;">
                     <td colspan="7">
                         <form id="edit-form" class="edit-form">

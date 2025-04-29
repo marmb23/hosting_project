@@ -1,27 +1,26 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+    //ini_set('display_errors', '1');
+    //ini_set('display_startup_errors', '1');
+    //error_reporting(E_ALL);
 
+    // Inclou el fitxer de la classe ProxmoxAPI per gestionar les operacions amb Proxmox
+    require_once '../../Php/Objetos/proxmox.php';
 
-require_once '../../Php/Objetos/proxmox.php';
+    // Obté les dades enviades pel formulari
+    $vmid = $_POST['vmid'];
+    $node = $_POST['node'];
+    $nombre = $_POST['nombre'];
+    $cpu = $_POST['cpu'];
+    $ram = $_POST['ram'];
+    $teclado = $_POST['teclado'];
 
-$vmid = $_POST['vmid'];
-$node = $_POST['node'];
-$nombre = $_POST['nombre'];
-$cpu = $_POST['cpu'];
-$ram = $_POST['ram'];
-$teclado = $_POST['teclado'];
+    // Crea una instància de l'API de Proxmox amb les credencials corresponents
+    $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
 
-echo "Debug: Datos recibidos - VMID: $vmid, Node: $node, Nombre: $nombre, CPU: $cpu, RAM: $ram, Teclado: $teclado.<br>";
+    // Actualitza la configuració de la màquina virtual
+    $proxmox->editVM($node, $vmid, $nombre, $cpu, $ram, $teclado);
 
-echo "Debug: Creando instancia de ProxmoxAPI.<br>";
-$proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
-
-echo "Debug: Llamando a editVM.<br>";
-// Actualizar la VM
-$proxmox->editVM($node, $vmid, $nombre, $cpu, $ram, $teclado);
-
-echo "Debug: Finalización del script.<br>";
-header("Location: " . $_SERVER['HTTP_REFERER']);
+    // Redirigeix a la pàgina anterior després de completar l'edició
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
 ?>

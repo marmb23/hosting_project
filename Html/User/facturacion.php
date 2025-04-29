@@ -1,12 +1,16 @@
 <?php
-session_start();
-require_once '../../Php/Config/database.php';
+    // Inicia la sessió per accedir a les dades de l'usuari
+    session_start();
 
-// Conexión a la base de datos
-$db = new Database();
-$conn = $db->getConnection();
+    // Inclou el fitxer de configuració de la base de dades
+    require_once '../../Php/Config/database.php';
 
-$invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
+    // Crea una connexió amb la base de dades
+    $db = new Database();
+    $conn = $db->getConnection();
+
+    // Obté les factures associades a l'usuari actual
+    $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +26,8 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
 </head>
 
 <body>
-    <!-- Barra navegación izquierda, es igual en todas las páginas -->
-    <nav class="navbar">
+    <!-- Barra navegació esquerra, és el mateix a totes les pàgines -->
+     <nav class="navbar">
         <div class="navbar-brand">
             <span>
                 <a href="../inicio.php">
@@ -42,7 +46,7 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
         </ul>
     </nav>
 
-    <!-- Header con el user, es igual en todas las páginas -->
+    <!-- Header amb l'usuari, és el mateix a totes les pàgines -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -52,7 +56,7 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
                     </div>
                     <span id="username"><?php echo($_SESSION['cliente']['username']);?></span>
                 </div>
-                <!-- Dropdown para el usuario -->
+                <!-- Dropdown per l'usuari -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
                     <a href="../../Php/Auth/cerrar_sesion.php"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
@@ -60,12 +64,12 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
             </div>
         </header>
 
-        <!-- Contenido principal -->
-        <!-- Tabla de facturas -->
+        <!-- Contingut principal -->
+        <!-- Taula de factures -->
         <main class="container">
             <h1>Facturación</h1>
 
-            <!-- Tabla de facturas -->
+            <!-- Taula de factures -->
             <section class="billing-section">
                 <h2>Historial de Facturación</h2>
                 <table class="billing-table">
@@ -80,15 +84,20 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
                     <tbody>
                         <?php if (!empty($invoices)): ?>
                             <?php
+                            // Calcula el total facturat sumant els imports de totes les factures
                             $total = 0;
                             foreach ($invoices as $invoice):
                                 $amount = floatval(str_replace(',', '.', $invoice['amount']));
                                 $total += $amount;
                             ?>
                                 <tr>
+                                    <!-- Mostra la data de la factura -->
                                     <td><?php echo htmlspecialchars($invoice['date']); ?></td>
+                                    <!-- Mostra la descripció de la factura -->
                                     <td><?php echo htmlspecialchars($invoice['description']); ?></td>
+                                    <!-- Mostra l'import de la factura -->
                                     <td><?php echo htmlspecialchars($invoice['amount']); ?></td>
+                                    <!-- Mostra l'estat de la factura: "Pagada" si està pagada, "No pagada" en cas contrari -->
                                     <td><?php echo $invoice['paid'] ? 'Pagada' : 'No pagada'; ?></td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -96,14 +105,16 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
                                 <tr>
                                     <td colspan="5">No hay facturas disponibles.</td>
                                 </tr>
+                                <!-- Mostra un missatge si no hi ha factures disponibles -->
                             <?php endif; ?>
                     </tbody>
                 </table>
             </section>
 
-            <!-- Resumen de facturación -->
+            <!-- Resum de facturació -->
             <section class="billing-summary">
                 <h2>Resumen</h2>
+                <!-- Mostra el total facturat formatat amb dos decimals i el símbol d'euro -->
                 <p>Total Facturado: <strong><?php echo number_format($total ?? 0, 2, ',', '') . '€'; ?></strong></p>
             </section>
         </main>

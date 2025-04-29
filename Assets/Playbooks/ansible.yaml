@@ -1,70 +1,121 @@
 ---
-- name: Crear contenedor y configurar PHP en Proxmox
-  hosts: localhost
-  become: yes
+- name: Crear contenidor en Proxmox
+  hosts: "{{ node }}"
+  gather_facts: no
   vars:
-    php_version: "200"
-    vm_id: 200  # ID del contenedor
-    node_name: "pve"
-    storage: "smb"
-    template: "smb:iso/alpine-standard-3.21.3-x86_64.iso"
-    hostname: "estatuto"
+    proxmox_host: "192.168.189.161"
+    api_user: "root@pam"
+    api_password: "P@ssw0rd"
+    node: "{{ node }}"
+    ct_id: "{{ ct_id }}"
+    hostname: "{{ hostname }}"
+    ostemplate: "smb:vztmpl/debian-12-standard_12.7-1_amd64.tar.zst"
+    storage: "{{ storage }}"
+    password: "{{ password }}"
+    cores: "{{ cores | int }}"
+    memory: "{{ memory | int }}"
+    disk: "{{ disk | int }}"
+    php_version: "{{ php_version }}"
 
   tasks:
-    - name: Crear contenedor LXC en Proxmox
+    - name: DEBUG - Mostrar variables abans de crear el contenidor
+      ansible.builtin.debug:
+        msg:
+          proxmox_host: "{{ proxmox_host }}"
+          api_user: "{{ api_user }}"
+          api_password: "{{ api_password }}"
+          node: "{{ node }}"
+          ct_id: "{{ ct_id }}"
+          hostname: "{{ hostname }}"
+          ostemplate: "{{ ostemplate }}"
+          password: "{{ password }}"
+          storage: "{{ storage }}"
+          memory: "{{ memory }}"
+          cores: "{{ cores }}"
+          disk: "{{ disk }}"
+          netif: '{"net0":"bridge=vmbr0,name=eth0,ip=dhcp"}'
+
+    - name: Crear contenidor LXC
       community.general.proxmox:
-        api_user: "root@pam"
-        api_password: "tu_contraseña"
-        api_host: "tu_direccion_ip_proxmox"
-        node: "{{ node_name }}"
-        vmid: "{{ vm_id }}"
+        api_user: "{{ api_user }}"
+        api_password: "{{ api_password }}"
+        api_host: "{{ proxmox_host }}"
+        node: "{{ node }}"
+        vmid: "{{ ct_id | int }}"
         hostname: "{{ hostname }}"
-        cores: 4
-        memory: 1024
-        swap: 512
-        netif:
-          - net0:
-              model: virtio
-              bridge: vmbr0
-              ip: dhcp
+        ostemplate: "{{ ostemplate }}"
+        password: "{{ password }}"
         storage: "{{ storage }}"
-        template: "{{ template }}"
-        state: started
-
-    - name: Esperar unos segundos para que el contenedor obtenga IP
-      ansible.builtin.pause:
-        seconds: 10
-
-    - name: Obtener IP del contenedor con lxc-info
-      ansible.builtin.command: "lxc-info -n {{ vm_id }} -iH"
-      register: container_ip_raw
-      changed_when: false
-
-    - name: Guardar IP como variable
-      set_fact:
-        container_ip: "{{ container_ip_raw.stdout | regex_search('(?:\\d{1,3}\\.){3}\\d{1,3}') }}"
-
-    - name: Esperar a que el contenedor esté accesible por SSH
-      wait_for:
-        host: "{{ container_ip }}"
-        port: 22
-        state: started
-        delay: 5
-        timeout: 300
-
-    - name: Instalar PHP en el contenedor
-      ansible.builtin.apt:
-        name:
-          - "php{{ php_version }}"
-          - "php{{ php_version }}-cli"
-          - "php{{ php_version }}-fpm"
-          - "php{{ php_version }}-mbstring"
-          - "php{{ php_version }}-xml"
-          - "php{{ php_version }}-curl"
-          - "php{{ php_version }}-mysql"
+        memory: "{{ memory | int }}"
+        cores: "{{ cores | int }}"
+        disk: "{{ disk | int }}"
+        netif: '{"net0":"bridge=vmbr0,name=eth0,ip=dhcp"}'
         state: present
-      delegate_to: "{{ container_ip }}"
-      become: yes
-      become_user: root
-      vars:
-        ansible_host: "{{ container_ip }}"
+        validate_certs: no
+        unprivileged: false
+
+    - name: Arrencar el contenidor
+      ansible.builtin.command: "pct start {{ ct_id }}"
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Esperar que el contenidor estigui en execució
+      ansible.builtin.command: "pct status {{ ct_id }}"
+      register: ct_status
+      until: "'status: running' in ct_status.stdout"
+      retries: 10
+      delay: 3
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Instal·lar systemd-timesyncd al contenidor
+      ansible.builtin.command: "pct exec {{ ct_id }} -- apt install -y systemd-timesyncd"
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Activar el servei de sincronització horària
+      ansible.builtin.command: "pct exec {{ ct_id }} -- systemctl start systemd-timesyncd"
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Actualitzar índex de paquets al contenidor
+      ansible.builtin.shell: >
+        pct exec {{ ct_id }} -- bash -lc '
+          set -eux
+          apt-get update
+        '
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Instal·lar dependències necessàries
+      ansible.builtin.shell: >
+        pct exec {{ ct_id }} -- bash -lc '
+          set -eux
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get install -y \
+            software-properties-common \
+            gnupg2 \
+            ca-certificates \
+            lsb-release \
+            apt-transport-https \
+            curl
+        '
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Afegir clau GPG i repositori Sury
+      ansible.builtin.shell: >
+        pct exec {{ ct_id }} -- bash -lc '
+          set -eux
+          curl -fsSL https://packages.sury.org/php/apt.gpg \
+            | gpg --dearmor > /etc/apt/trusted.gpg.d/php.gpg
+          echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" \
+            > /etc/apt/sources.list.d/php-sury.list
+        '
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Actualitzar índex després d'afegir el repositori
+      ansible.builtin.shell: >
+        pct exec {{ ct_id }} -- bash -lc '
+          set -eux
+          apt-get update
+        '
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Instal·lar PHP dins del contenidor
+      ansible.builtin.command: "pct exec {{ ct_id }} -- apt install -y {{ php_version }}"
+      delegate_to: "{{ inventory_hostname }}"

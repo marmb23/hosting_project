@@ -1,4 +1,5 @@
 <?php
+    // Inicia la sessió per accedir a les dades de l'usuari
     session_start();  
 ?>
 <!DOCTYPE html>
@@ -14,8 +15,8 @@
 </head>
 
 <body>
-    <!-- Barra navegación izquierda, es igual en todas las páginas -->
-    <nav class="navbar">
+    <!-- Barra de navegació esquerra, comuna a totes les pàgines -->
+     <nav class="navbar">
         <div class="navbar-brand">
             <span>
                 <a href="../inicio.php">
@@ -34,7 +35,7 @@
         </ul>
     </nav>
 
-    <!-- Header con el user, es igual en todas las páginas -->
+    <!-- Header amb la informació de l'usuari, comuna a totes les pàgines -->
     <div class="main-content">
         <header>
             <div class="navbar-user">
@@ -51,31 +52,38 @@
             </div>
         </header>
 
-        <!-- Contenido principal -->
+        <!-- Contingut principal -->
         <main class="container">
             <h1>Soporte</h1>
             <p>Si tienes algún problema, por favor completa el siguiente formulario y nuestro equipo de soporte se
                 pondrá en contacto contigo lo antes posible.</p>
 
-            <!-- Formulario de soporte -->
+            <!-- Formulari de suport -->
             <form id="support-form" class="support-form" onsubmit="enviarCorreo(); return false;">
                 <div class="form-group">
                     <label for="subject">Asunto</label>
+                    <!-- Input per especificar l'assumpte del problema -->
                     <input type="text" id="subject" name="subject" placeholder="Asunto del problema" required>
                 </div>
 
                 <div class="form-group">
                     <label for="message">Descripción del Problema</label>
+                    <!-- Textarea per descriure el problema -->
                     <textarea id="message" name="message" rows="5" cols="5" placeholder="Describe tu problema aquí..." required></textarea>
                 </div>
 
+                <!-- Botó per enviar el formulari de suport -->
                 <button type="submit" class="btn-primary">Enviar Ticket</button>
             </form>
         </main>
     </div>
 
-     <!-- JavaScript -->
+    <!-- JavaScript per enviar un correu electrònic amb el problema descrit -->
     <script>
+    /**
+     * Envia un correu electrònic amb l'assumpte i la descripció del problema proporcionats per l'usuari.
+     * Utilitza el protocol `mailto` per obrir el client de correu electrònic predeterminat.
+     */
     function enviarCorreo() {
         const destinatario = "m.manzano@sapalomera.cat";
         const usuari = "<?php echo ($_SESSION['cliente']['username']) ?>";

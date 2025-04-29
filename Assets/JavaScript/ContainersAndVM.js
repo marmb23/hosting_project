@@ -1,3 +1,10 @@
+/**
+ * Inicialitza els esdeveniments dels checkbox per habilitar o deshabilitar botons segons la selecció.
+ * @param {Object} config - Configuració dels selectors i IDs necessaris.
+ * @param {string} config.apagarBtnId - L'ID del botó d'apagar.
+ * @param {string} config.checkboxSelector - El selector dels checkbox.
+ * @param {string} config.selectAllId - L'ID del checkbox per seleccionar tots.
+ */
 function initCheckboxEvents(config) {
     const apagarBtn = document.getElementById(config.apagarBtnId);
     const checkboxes = document.querySelectorAll(config.checkboxSelector);
@@ -17,6 +24,14 @@ function initCheckboxEvents(config) {
     });
 }
 
+/**
+ * Obté les màquines virtuals seleccionades a la taula.
+ * @param {Object} config - Configuració dels selectors necessaris.
+ * @param {string} config.checkboxSelector - El selector dels checkbox.
+ * @param {string} config.nameCellSelector - El selector de la cel·la amb el nom de la màquina.
+ * @param {string} config.statusCellSelector - El selector de la cel·la amb l'estat de la màquina.
+ * @returns {Array<Object>} - Una llista d'objectes amb informació de les màquines seleccionades.
+ */
 function getSelectedVMs(config) {
     const selectedCheckboxes = document.querySelectorAll(`${config.checkboxSelector}:checked`);
     return Array.from(selectedCheckboxes).map(cb => {
@@ -31,6 +46,14 @@ function getSelectedVMs(config) {
     });
 }
 
+/**
+ * Inicialitza els botons d'acció per executar operacions sobre les màquines seleccionades.
+ * @param {Object} config - Configuració dels botons i accions.
+ * @param {string} config.formId - L'ID del formulari.
+ * @param {string} config.vmsInputId - L'ID del camp ocult per enviar les màquines seleccionades.
+ * @param {Object} config.actions - Les URLs de les accions (apagar, encendre, reiniciar, etc.).
+ * @param {string} config.editActionUrl - La URL per editar màquines.
+ */
 function initActionButtons(config) {
     const form = document.getElementById(config.formId);
     const vmsInput = document.getElementById(config.vmsInputId);
@@ -61,6 +84,9 @@ function initActionButtons(config) {
     });
 }
 
+/**
+ * Actualitza les dades dels contenidors (LXC) a la taula amb informació actualitzada del servidor.
+ */
 function actualizarDatosLXC() {
     fetch("../../Php/LXC/status.php")
         .then(response => response.json())
@@ -85,6 +111,9 @@ function actualizarDatosLXC() {
         .catch(error => console.error("Error al actualizar datos:", error));
 }
 
+/**
+ * Actualitza les dades de les màquines virtuals (VM) a la taula amb informació actualitzada del servidor.
+ */
 function actualizarDatosVM() {
     fetch("../../Php/VM/status.php")
         .then(response => response.json())
@@ -109,7 +138,9 @@ function actualizarDatosVM() {
         .catch(error => console.error("Error al actualizar datos:", error));
 }
 
-
+/**
+ * Mostra la fila d'edició sota la màquina seleccionada i omple els inputs amb les dades actuals.
+ */
 function editarFila() {
     const checked = document.querySelector('.vm-select:checked');
 
@@ -142,6 +173,11 @@ function editarFila() {
 // Asignar la función al botón
 document.getElementById('btnEditar').addEventListener('click', editarFila);
 
+/**
+ * Mostra o amaga un element HTML canviant les seves classes de visibilitat.
+ * @param {HTMLElement} element - L'element HTML a modificar.
+ * @param {boolean} show - Indica si l'element s'ha de mostrar (true) o amagar (false).
+ */
 function toggleVisibility(element, show) {
     if (show) {
         element.classList.remove('hidden');
@@ -152,6 +188,10 @@ function toggleVisibility(element, show) {
     }
 }
 
+/**
+ * Envia un formulari en format JSON al servidor quan es fa clic en un botó específic.
+ * @param {string} btnId - L'ID del botó que activa l'enviament del formulari.
+ */
 function enviarFormularioJson(btnId) {
     const btn = document.getElementById();
 
