@@ -151,6 +151,7 @@ class ProxmoxAPI {
     function deleteVM($node, $vmid) {
         $connection = $this->sshConnection();
         $command = "pvesh delete /nodes/$node/qemu/$vmid";
+        $this->shutdownVM($node, $vmid);
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
         return $result;
@@ -203,8 +204,16 @@ class ProxmoxAPI {
             $params .= "--keyboard $teclado ";
         }
 
+        if (empty($node) || empty($vmid)) {
+            echo "Node and VMID must not be empty.";
+            echo $node;
+            echo $vmid;
+        }
+
         $connection = $this->sshConnection();
+ 
         $command = "pvesh set /nodes/$node/qemu/$vmid/config $params";
+        echo $command;
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
         return $result;
@@ -278,6 +287,7 @@ class ProxmoxAPI {
     public function deleteLXC($node, $vmid) {
         $connection = $this->sshConnection();
         $command = "pvesh delete /nodes/$node/lxc/$vmid";
+        $this->shutdownLXC($node, $vmid);
         $result = $this->executeCommand($connection, $command);
         ssh2_disconnect($connection);
         return $result;

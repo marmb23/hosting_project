@@ -18,23 +18,24 @@ document.addEventListener("DOMContentLoaded", function () {
         statusUrl: "../../Php/VM/status.php",
         editBtnId: "btnEditar",
         editRowId: "edit-row",
-        editFormId: "formEditar",
+        editFormId: "edit-form",
         saveBtnId: "btnGuardar",
-        editCpuId: "edit-cpu",
-        editRamId: "edit-ram",
-        editSwapId: "edit-swap",
+        editNombreId: "vmid",
+        editCpuId: "vcpus",
+        editRamId: "ram",
+        editTecladoId: "edit-teclado",
         editActionUrl: "../../Php/VM/editar.php",
         actions: {
             apagar: "../../Php/VM/apagar.php",
             encender: "../../Php/VM/encender.php",
             reiniciar: "../../Php/VM/reiniciar.php",
             consola: "../../Php/VM/consola.php",
-            eliminar: "../../Php/VM/eliminar.php"
+            eliminar: "../../Php/VM/eliminar.php",
         }
     };
 
     initCheckboxEvents(config);
     initActionButtons(config);
-    initEditButton(config);
-    setInterval(() => actualizarDatos(config), 3000);
+    editarFila(config);
+    setInterval(() => actualizarDatosVM(config), 3000);
 });

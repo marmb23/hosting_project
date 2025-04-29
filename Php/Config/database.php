@@ -33,6 +33,16 @@ class Database {
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    public function getName($name) {
+        $statementlxc = $this->conn->prepare("SELECT COUNT(container.name) FROM container WHERE container.name = ?");
+        $statementvm = $this->conn->prepare("SELECT COUNT(virtual_machine.name) FROM virtual_machine WHERE virtual_machine.name = ?");
+        $statementlxc->execute([$name]);
+        $statementvm->execute([$name]);
+        $lxc = $statementlxc->fetchAll(PDO::FETCH_COLUMN)[0];
+        $vm = $statementvm->fetchAll(PDO::FETCH_COLUMN)[0];
+        return $lxc > 0 ? false : ($vm > 0 ? false : true); 
+    }
+
     public function getInvoiceUser($user) {
         $statement = $this->conn->prepare("SELECT amount, date, paid, description FROM invoice i INNER JOIN user u ON i.user_id = u.id WHERE u.username = ?");
         $statement->execute([$user]);

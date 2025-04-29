@@ -89,7 +89,7 @@ $invoices = $db->getInvoiceUser($_SESSION['cliente']['username']);
                                     <td><?php echo htmlspecialchars($invoice['date']); ?></td>
                                     <td><?php echo htmlspecialchars($invoice['description']); ?></td>
                                     <td><?php echo htmlspecialchars($invoice['amount']); ?></td>
-                                    <td><?php echo htmlspecialchars($invoice['paid']); ?></td>
+                                    <td><?php echo $invoice['paid'] ? 'Pagada' : 'No pagada'; ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php else: ?>

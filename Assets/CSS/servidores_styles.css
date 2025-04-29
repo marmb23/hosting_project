@@ -88,16 +88,10 @@
 }
 
 /* Estado visible */
-.visible {
-    opacity: 1;
-    height: auto;
-    transition: opacity 0.3s ease, height 0.3s ease;
+.hidden {
+    display: none;
 }
 
-/* Estado oculto */
-.hidden {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: opacity 0.3s ease, height 0.3s ease;
+.visible {
+    display: table-row; /* O el valor adecuado si es un elemento de formulario */
 }

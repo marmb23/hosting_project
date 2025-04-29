@@ -49,6 +49,7 @@ function initActionButtons(config) {
     configureButton(config.apagarBtnId, config.actions.apagar);
     configureButton(config.encenderBtnId, config.actions.encender);
     configureButton(config.reiniciarBtnId, config.actions.reiniciar);
+    configureButton(config.saveBtnId, config.editActionUrl);
     configureButton(config.consolaBtnId, config.actions.consola);
     configureButton(config.eliminarBtnId, config.actions.eliminar, vms => {
         const vmEncendida = vms.find(vm => vm.status === "running");
@@ -60,11 +61,10 @@ function initActionButtons(config) {
     });
 }
 
-function actualizarDatos(config) {
-    fetch(config.statusUrl)
+function actualizarDatosLXC() {
+    fetch("../../Php/LXC/status.php")
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             data.forEach(vm => {
                 const cell = document.querySelector(`td[data-id="${vm.vmid}"]`);
                 if (cell) {
@@ -72,13 +72,12 @@ function actualizarDatos(config) {
 
                     // Excluir la fila de edición (edit-row) de las actualizaciones
                     if (row.id !== 'edit-row') {
-                        // Actualizar nombre
-                        row.querySelector(config.nameCellSelector).textContent = vm.name;
-                        row.querySelector(config.statusCellSelector).innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
-                        row.querySelector(config.uptimeCellSelector).textContent = vm.uptime;
-                        row.querySelector(config.cpuCellSelector).textContent = vm.cpu;
-                        row.querySelector(config.memoryCellSelector).textContent = `${vm.mem} / ${vm.maxmem}`;
-                        row.querySelector(config.diskCellSelector).textContent = `${vm.disk} / ${vm.maxdisk}`;
+                        row.querySelector("td:nth-child(2)").textContent = vm.name;
+                        row.querySelector("td:nth-child(3)").innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
+                        row.querySelector("td:nth-child(4)").textContent = vm.uptime;
+                        row.querySelector("td:nth-child(5)").textContent = vm.cpu;
+                        row.querySelector("td:nth-child(6)").textContent = `${vm.mem} / ${vm.maxmem}`;
+                        row.querySelector("td:nth-child(7)").textContent = `${vm.disk} / ${vm.maxdisk}`;
                     }
                 }
             });
@@ -86,75 +85,111 @@ function actualizarDatos(config) {
         .catch(error => console.error("Error al actualizar datos:", error));
 }
 
-function initEditButton(config) {
-    document.getElementById(config.editBtnId).addEventListener('click', function () {
-        const checked = document.querySelector(`${config.checkboxSelector}:checked`);
-        if (!checked) return;
+function actualizarDatosVM() {
+    fetch("../../Php/VM/status.php")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(vm => {
+                const cell = document.querySelector(`td[data-id="${vm.vmid}"]`);
+                if (cell) {
+                    const row = cell.closest("tr");
 
-        const row = checked.closest('tr');
-        const editRow = document.getElementById(config.editRowId);
-        const formEditar = document.getElementById(config.editFormId);
-
-        // Mostrar la fila de edición y el formulario con transición
-        row.insertAdjacentElement('afterend', editRow);
-        toggleVisibility(editRow, true);
-        toggleVisibility(formEditar, true);
-
-        // Obtener datos de la fila seleccionada
-        const cells = row.querySelectorAll('td');
-        const nombre = cells[1].innerText.trim();
-        const cpu = parseFloat(cells[4].innerText);
-        const ram = parseFloat(cells[5].innerText);
-
-        // Configurar el botón de guardar
-        const guardarBtn = document.getElementById(config.saveBtnId);
-        guardarBtn.replaceWith(guardarBtn.cloneNode(true)); // Elimina eventos previos
-        document.getElementById(config.saveBtnId).addEventListener('click', function (e) {
-            e.preventDefault();
-
-            const nuevosDatos = {
-                vmid: cells[1].dataset.id,
-                node: cells[1].dataset.node,
-                cpu: document.getElementById(config.editCpuId).value,
-                ram: document.getElementById(config.editRamId).value,
-                swap: document.getElementById(config.editSwapId).value,
-            };
-
-            const form = document.getElementById(config.editFormId);
-            let jsonInput = document.getElementById('json-data');
-            if (!jsonInput) {
-                jsonInput = document.createElement('input');
-                jsonInput.type = 'hidden';
-                jsonInput.name = 'json_data';
-                jsonInput.id = 'json-data';
-                form.appendChild(jsonInput);
-            }
-            jsonInput.value = JSON.stringify(nuevosDatos);
-
-            form.action = config.editActionUrl;
-            form.submit();
-        });
-
-        // Ocultar la fila de edición y el formulario si se deselecciona el checkbox
-        checked.addEventListener('change', function () {
-            if (!this.checked) {
-                toggleVisibility(editRow, false);
-                toggleVisibility(formEditar, false);
-            }
-        });
-    });
+                    // Excluir la fila de edición (edit-row) de las actualizaciones
+                    if (row.id !== 'edit-row') {
+                        row.querySelector("td:nth-child(2)").textContent = vm.name;
+                        row.querySelector("td:nth-child(3)").innerHTML = `<span class="status-indicator ${vm.status === 'running' ? 'active' : 'inactive'}"></span>${vm.status}`;
+                        row.querySelector("td:nth-child(4)").textContent = vm.uptime;
+                        row.querySelector("td:nth-child(5)").textContent = vm.cpu;
+                        row.querySelector("td:nth-child(6)").textContent = `${vm.mem} / ${vm.maxmem}`;
+                        row.querySelector("td:nth-child(7)").textContent = `${vm.disk} / ${vm.maxdisk}`;
+                    }
+                }
+            });
+        })
+        .catch(error => console.error("Error al actualizar datos:", error));
 }
+
+
+function editarFila() {
+    const checked = document.querySelector('.vm-select:checked');
+
+    if (!checked) return;
+
+    const row = checked.closest('tr');
+    const editRow = document.getElementById('edit-row');
+    
+    // Insertamos justo debajo
+    row.insertAdjacentElement('afterend', editRow);
+    editRow.style.display = 'table-row';
+
+    // Obtenemos los datos actuales desde la fila
+    const cells = row.querySelectorAll('td');
+    const nombre = cells[1].innerText.trim();
+    const cpu = parseFloat(cells[4].innerText);
+    const ram = parseFloat(cells[5].innerText);
+
+    const vmid = row.querySelector('td[data-id]').getAttribute('data-id');
+    const node = row.querySelector('td[data-id]').getAttribute('data-node');
+    document.getElementById('edit-vmid').value = vmid;
+    document.getElementById('edit-node').value = node;
+
+    // Seteamos valores en inputs
+    document.getElementById('edit-nombre').value = nombre;
+    document.getElementById('edit-cpu').value = isNaN(cpu) ? '' : cpu;
+    document.getElementById('edit-ram').value = isNaN(ram) ? '' : ram;
+}
+
+// Asignar la función al botón
+document.getElementById('btnEditar').addEventListener('click', editarFila);
 
 function toggleVisibility(element, show) {
     if (show) {
         element.classList.remove('hidden');
         element.classList.add('visible');
-        element.style.display = ''; // Asegúrate de que sea visible
     } else {
         element.classList.remove('visible');
         element.classList.add('hidden');
-        element.addEventListener('transitionend', function () {
-            element.style.display = 'none'; // Oculta completamente después de la transición
-        }, { once: true }); // Asegura que el evento se ejecute solo una vez
     }
+}
+
+function enviarFormularioJson(btnId) {
+    const btn = document.getElementById();
+
+    if (!btn) {
+        console.error(`No se encontró un botón con id: ${btnId}`);
+        return;
+    }
+
+    btn.addEventListener('click', function(event) {
+        event.preventDefault(); // Evita el envío tradicional
+
+        const form = btn.closest('form');
+        if (!form) {
+            console.error(`No se encontró un formulario asociado al botón ${btnId}.`);
+            return;
+        }
+
+        const formData = new FormData(form);
+        const jsonData = {};
+
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Respuesta del servidor:", data);
+            // Aquí puedes poner mensajes de éxito, redireccionar, etc.
+        })
+        .catch(error => {
+            console.error("Error al enviar el formulario:", error);
+        });
+    });
 }

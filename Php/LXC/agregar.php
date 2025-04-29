@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 session_start();
 
 require_once '../../Php/Objetos/proxmox.php';
@@ -24,21 +20,16 @@ $php = $_POST['php'];
 $price = 14.99;
 $date = date('Y-m-d H:i:s');
 echo $proxmox->getLessResources();
-echo '<br>';
 echo $database->getMaxLXCID()[0];
-echo '<br>';
 
 echo $database->getMaxVMID()[0];
 echo '<br>';
 
 $lxcid = $database->addContainer($username, $nombre, $cpu, $ram, $storage, $price);
 echo $php;
-echo '<br>';
 
 echo $proxmox->newLXC($nodoLess, $lxcid, $nombre, $password, $cpu, $ram, $storage, $php);
 $database->addInvoice($username, $price, $date, $nombre);
 
-
-
-
+header("Location: " . $_SERVER['HTTP_REFERER']);
 ?>

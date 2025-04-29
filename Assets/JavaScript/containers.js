@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         statusUrl: "../../Php/LXC/status.php",
         editBtnId: "btnEditar",
         editRowId: "edit-row",
-        editFormId: "formEditar",
+        editFormId: "edit-form",
         saveBtnId: "btnGuardar",
         editCpuId: "edit-cpu",
         editRamId: "edit-ram",
@@ -35,6 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initCheckboxEvents(config);
     initActionButtons(config);
-    initEditButton(config);
-    setInterval(() => actualizarDatos(config), 3000);
+    //initEditButton(config);
+    setInterval(() => actualizarDatosLXC(), 3000);
 });

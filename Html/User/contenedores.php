@@ -115,13 +115,13 @@
                 </tbody>
                 <!-- Este es el "tr" que se muestra al pulsar el botón editar -->
                 <tr id="edit-row" style="display: none;">
-                    <td id="formEditar" class="hidden" colspan="7">
-                        <form id="edit-form" class="edit-form" method="POST">
+                    <td colspan="7">
+                        <form id="edit-form" class="edit-form">
                             <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
                             <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0.16"></label>
                             <label>Swap (GB): <input type="number" id="edit-swap" step="0.1" min="0"></label>
                             </label>
-                            <button id="btnGuardar" type="submit">Guardar</button>
+                            <button type="submit" id="btnGuardar">Guardar</button>
                         </form>
                     </td>
                 </tr>
@@ -131,7 +131,7 @@
     
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/buttons.js"></script>
-    <script src="../../Assets/JavaScript/ContainersAndVM.js"></script>
     <script src="../../Assets/JavaScript/containers.js"></script>
+    <script src="../../Assets/JavaScript/ContainersAndVM.js"></script>
 </body>
 </html>

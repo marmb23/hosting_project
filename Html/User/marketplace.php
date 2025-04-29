@@ -123,7 +123,7 @@ session_start();
                                         <div class="input-group">
                                         <select id="os" name="os" class="custom-select">
                                             <option value="alpine-standard-3.21.3-x86_64.iso">Alpine 3.21.3</option>
-                                            <option value="debian">Debian</option>
+                                            <option value="debian">Debian 12.7</option>
                                         </select>
                                         </div>
                                     </div>

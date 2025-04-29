@@ -47,7 +47,7 @@
                 <!-- Dropdown de usuario -->
                 <div class="dropdown-menu">
                     <a href="perfil.php"><i class="fas fa-user"></i> Editar Perfil</a>
-                    <a href="cerrar_sesion.php"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                    <a href="../../Php/Auth/cerrar_sesion.php"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
                 </div>
             </div>
         </header>
@@ -101,7 +101,7 @@
                             $diskGB = round($vm['disk'] / (1024 ** 3), 2);
                             $maxDiskGB = round($vm['maxdisk'] / (1024 ** 3), 2);
                             echo "
-                            <tr>
+                            <tr id='machines'>
                                 <td><input type='checkbox' class='vm-select'></td>
                                 <td data-id='{$vm['vmid']}' data-node='{$vm['node']}'>{$vm['name']}</td>
                                 <td><span class='status-indicator {$statusClass}'></span>{$vm['status']}</td>
@@ -115,13 +115,15 @@
                 </tbody>
                 <!-- Fila para editar -->
                 <tr id="edit-row" style="display: none;">
-                    <td id="formEditar" class="hidden" colspan="7">
-                        <form id="edit-form" class="edit-form" method="POST">
-                            <label>Nombre: <input type="text" id="edit-nombre"></label>
-                            <label>Cores: <input type="number" id="edit-cpu" min="1" max="100"></label>
-                            <label>RAM (GB): <input type="number" id="edit-ram" step="0.1" min="0"></label>
+                    <td colspan="7">
+                        <form id="edit-form" class="edit-form" method="POST" action="../../Php/VM/editar.php">
+                            <input type="hidden" id="edit-vmid" name="vmid">
+                            <input type="hidden" id="edit-node" name="node">
+                            <label>Nombre: <input type="text" id="edit-nombre" name="nombre"></label>
+                            <label>Cores: <input type="number" id="edit-cpu" min="1" max="100" name="cpu"></label>
+                            <label>RAM (GB): <input type="number" id="edit-ram" name="ram" step="0.1" min="0"></label>
                             <label>Teclado:
-                                <select id="edit-teclado">
+                                <select id="edit-teclado" name="teclado">
                                     <option value="de">Alemán</option>
                                     <option value="de-ch">Alemán (Suiza)</option>
                                     <option value="da">Danés</option>
@@ -158,7 +160,7 @@
 
     <!-- JavaScript -->
     <script src="../../Assets/JavaScript/buttons.js"></script>
-    <script src="../../Assets/JavaScript/ContainersAndVM.js"></script>
     <script src="../../Assets/JavaScript/machines.js"></script>
+    <script src="../../Assets/JavaScript/ContainersAndVM.js"></script>
 </body>
 </html>

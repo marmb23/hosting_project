@@ -12,7 +12,11 @@ require_once '../../Php/Config/database.php';
 $proxmox = new ProxmoxAPI("26.29.68.71", "root@pam!wasa", "27794c83-e74d-42df-ad25-f1d47bbb5633");
 $database = new Database();
 $conn = $database->getConnection();
-
+if ($database->getName($_POST['nombrevmid']) == false) {
+    echo "<script>alert('El nombre de la VM ya existe');</script>";
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 $nodoLess = $proxmox->getLessResources();
 $username = $_SESSION['cliente']['username'];
 $nombre = $_POST['nombrevmid'];

@@ -58,26 +58,34 @@
                 pondrá en contacto contigo lo antes posible.</p>
 
             <!-- Formulario de soporte -->
-            <form id="support-form" class="support-form">
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required>
-                </div>
+            <form id="support-form" class="support-form" onsubmit="enviarCorreo(); return false;">
                 <div class="form-group">
                     <label for="subject">Asunto</label>
                     <input type="text" id="subject" name="subject" placeholder="Asunto del problema" required>
                 </div>
+
                 <div class="form-group">
                     <label for="message">Descripción del Problema</label>
-                    <textarea id="message" name="message" rows="5" cols="5" placeholder="Describe tu problema aquí..."
-                        required></textarea>
+                    <textarea id="message" name="message" rows="5" cols="5" placeholder="Describe tu problema aquí..." required></textarea>
                 </div>
+
                 <button type="submit" class="btn-primary">Enviar Ticket</button>
             </form>
         </main>
     </div>
-    
-    <!-- JavaScript -->
+
+     <!-- JavaScript -->
+    <script>
+    function enviarCorreo() {
+        const destinatario = "m.manzano@sapalomera.cat";
+        const usuari = "<?php echo ($_SESSION['cliente']['username']) ?>";
+        const subject = encodeURIComponent(document.getElementById("subject").value) + " - " + "Usuario: " + usuari;
+        const message = document.getElementById("message").value;
+
+        const body = encodeURIComponent(`Descripción del problema:\n\n${message}`);
+        window.location.href = `mailto:${destinatario}?subject=${subject}&body=${body}`;
+    }
+    </script>
     <script src="../../Assets/JavaScript/buttons.js"></script>
 </body>
 
