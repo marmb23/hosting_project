@@ -20,7 +20,7 @@ Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para
 
 ## Licencia
 
-Este proyecto actualmente no tiene una licencia especificada.
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](https://github.com/marmb23/hosting_project/blob/main/LICENSE) para más información.
 
 ## Contacto
 
